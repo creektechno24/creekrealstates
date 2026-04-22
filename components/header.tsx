@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Home, Building2, Plus, LogOut } from "lucide-react"
@@ -16,7 +17,6 @@ export function Header() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // 🔥 Listen to auth changes
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null)
@@ -24,7 +24,6 @@ export function Header() {
       }
     )
 
-    // Initial fetch
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user)
       setLoading(false)
@@ -44,9 +43,15 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
-        {/* Logo */}
+        {/* 🔥 LOGO FIXED */}
         <Link href="/" className="flex items-center gap-2">
-          <Building2 className="h-8 w-8 text-primary" />
+          <Image
+            src="/images/logo.jpg"   // ✅ CORRECT PATH
+            alt="Creek Real Estates"
+            width={40}
+            height={40}
+            style={{ height: "auto" }} // ✅ warning fix
+          />
           <span className="text-xl font-bold">Creek Real Estates</span>
         </Link>
 
@@ -82,7 +87,7 @@ export function Header() {
         {/* Right Side */}
         <div className="flex items-center gap-3">
 
-          {/* 🔥 Post Property Button (smart redirect) */}
+          {/* Post Property */}
           {!loading && (
             <Link href={user ? "/post-property" : "/login?redirect=/post-property"}>
               <Button className="gap-2">
@@ -92,7 +97,7 @@ export function Header() {
             </Link>
           )}
 
-          {/* 🔥 Logout Button (only if logged in) */}
+          {/* Logout */}
           {!loading && user && (
             <Button variant="outline" onClick={handleLogout} className="gap-2">
               <LogOut className="h-4 w-4" />
