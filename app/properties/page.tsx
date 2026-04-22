@@ -6,11 +6,14 @@ import { createClient } from "@/lib/supabase/server"
 import type { Property } from "@/lib/types"
 import { Spinner } from "@/components/ui/spinner"
 
+export const dynamic = "force-dynamic"
+
 interface SearchParams {
   search?: string
   type?: string
 }
 
+// 🔥 FETCH PROPERTIES
 async function getProperties(searchParams: SearchParams): Promise<Property[]> {
   const supabase = await createClient()
 
@@ -36,14 +39,22 @@ async function getProperties(searchParams: SearchParams): Promise<Property[]> {
   return data as Property[]
 }
 
-async function PropertiesContent({ searchParams }: { searchParams: SearchParams }) {
+// 🔥 CONTENT
+async function PropertiesContent({
+  searchParams,
+  isAdmin,
+}: {
+  searchParams: SearchParams
+  isAdmin: boolean
+}) {
   const properties = await getProperties(searchParams)
 
   if (properties.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-border bg-muted/50 p-12 text-center">
         <p className="text-lg text-muted-foreground">
-          No properties found{searchParams.search ? ` in "${searchParams.search}"` : ""}.
+          No properties found
+          {searchParams.search ? ` in "${searchParams.search}"` : ""}.
         </p>
         <p className="mt-2 text-sm text-muted-foreground">
           Try adjusting your search or filters.
@@ -55,12 +66,17 @@ async function PropertiesContent({ searchParams }: { searchParams: SearchParams 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {properties.map((property) => (
-        <PropertyCard key={property.id} property={property} />
+        <PropertyCard
+          key={property.id}
+          property={property}
+          isAdmin={isAdmin} // 🔥 pass admin
+        />
       ))}
     </div>
   )
 }
 
+// 🔥 MAIN PAGE
 export default async function PropertiesPage({
   searchParams,
 }: {
@@ -68,26 +84,46 @@ export default async function PropertiesPage({
 }) {
   const params = await searchParams
 
+  const supabase = await createClient()
+
+  // 🔐 GET USER
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  // 🔥 ADMIN CHECK
+  const isAdmin = user?.email === "psnprasad.it@gmail.com"
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">All Properties</h1>
-          <p className="mt-2 text-muted-foreground">
-            Browse through our collection of houses, flats, and land
-          </p>
-        </div>
+      
+      {/* Heading */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-foreground">
+          All Properties
+        </h1>
+        <p className="mt-2 text-muted-foreground">
+          Browse through our collection of houses, flats, and land
+        </p>
+      </div>
 
-        <PropertyFilters />
+      {/* Filters */}
+      <PropertyFilters />
 
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center py-20">
-              <Spinner className="h-8 w-8" />
-            </div>
-          }
-        >
-          <PropertiesContent searchParams={params} />
-        </Suspense>
+      {/* Content */}
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center py-20">
+            <Spinner className="h-8 w-8" />
+          </div>
+        }
+      >
+        <PropertiesContent
+          searchParams={params}
+          isAdmin={isAdmin} // 🔥 pass here
+        />
+      </Suspense>
+
     </div>
   )
 }
