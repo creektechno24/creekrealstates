@@ -7,7 +7,7 @@ import { MapPin, Phone, Home, Building, LandPlot, Heart, Trash2 } from "lucide-r
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { createClient } from "@/lib/supabase/client"
-
+import { useToast } from "@/hooks/use-toast"
 export interface Property {
   id: string
   title: string
@@ -47,6 +47,7 @@ export function PropertyCard({
   isAdmin?: boolean
 }) {
   const router = useRouter()
+  const { toast } = useToast()
   const TypeIcon = typeIcons[property.type]
 
   const imageSrc =
@@ -56,27 +57,36 @@ export function PropertyCard({
 
   const imageCount = property.images?.length || 0
 
-  // 🔥 DELETE
   async function handleDelete(id: string) {
-    const supabase = createClient()
+  const supabase = createClient()
 
-    const ok = confirm("Delete this property?")
-    if (!ok) return
+  const ok = confirm("Delete this property?")
+  if (!ok) return
 
-    const { error } = await supabase
-      .from("properties")
-      .delete()
-      .eq("id", id)
+  const { error } = await supabase
+    .from("properties")
+    .delete()
+    .eq("id", id)
 
-    if (error) {
-      alert("Delete failed ❌")
-      return
-    }
-
-    alert("Deleted successfully ✅")
-
-    router.refresh() // 🔥 UI update
+  if (error) {
+    toast({
+      title: "Error ❌",
+      description: "Failed to delete property",
+      variant: "destructive",
+    })
+    return
   }
+
+  // 🔥 TOAST FIRST
+  toast({
+    title: "Deleted successfully ✅",
+    description: "Property removed",
+  })
+
+  // 🔥 THEN REFRESH
+  router.refresh()
+}
+ 
 
   return (
     <div className="relative">
