@@ -35,10 +35,7 @@ export default async function PostPropertyPage() {
           <PropertyForm />
         </div>
 
-        {/* 🔥 Logout Button */}
-        <div className="mt-6 text-center">
-          <LogoutButton />
-        </div>
+      
 
       </main>
     </div>
