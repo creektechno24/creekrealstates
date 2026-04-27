@@ -73,6 +73,7 @@ export function PropertyForm({
           .eq("id", property.id)
 
         if (error) throw error
+  alert("Updated successfully ✅")   // 🔥 ADD THIS
 
         onSuccess?.()
       } else {
