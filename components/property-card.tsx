@@ -4,11 +4,30 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import { MapPin, Phone, Home, Building, LandPlot, Heart, Trash2 } from "lucide-react"
+import {
+  MapPin,
+  Phone,
+  Home,
+  Building,
+  LandPlot,
+  Heart,
+  Trash2,
+  Pencil,
+} from "lucide-react"
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { createClient } from "@/lib/supabase/client"
 import { useToast } from "@/hooks/use-toast"
+
+// 🔥 ADD
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { PropertyForm } from "@/components/property-form"
 
 export interface Property {
   id: string
@@ -47,8 +66,9 @@ export function PropertyCard({ property }: { property: Property }) {
   const supabase = createClient()
 
   const [isAdmin, setIsAdmin] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false) // 🔥 NEW
 
-  // 🔥 AUTO ADMIN CHECK
+  // 🔥 ADMIN CHECK
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       const user = data.user
@@ -70,7 +90,7 @@ export function PropertyCard({ property }: { property: Property }) {
 
   const imageCount = property.images?.length || 0
 
-  // 🔥 DELETE
+  // ✅ WORKING DELETE
   async function handleDelete(id: string) {
     const ok = confirm("Delete this property?")
     if (!ok) return
@@ -100,9 +120,11 @@ export function PropertyCard({ property }: { property: Property }) {
   return (
     <div className="relative">
 
-      {/* 🔥 ADMIN ONLY DELETE */}
+      {/* 🔥 DELETE */}
       {isAdmin && (
-        <div className="absolute right-3 top-3 z-20">
+        <div className="absolute right-3 top-3 z-20 flex gap-2">
+
+          {/* DELETE */}
           <button
             onClick={(e) => {
               e.preventDefault()
@@ -113,12 +135,25 @@ export function PropertyCard({ property }: { property: Property }) {
           >
             <Trash2 className="h-4 w-4 text-red-600" />
           </button>
+
+          {/* EDIT */}
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              setOpenEdit(true)
+            }}
+            className="rounded-full bg-white/80 p-2 backdrop-blur hover:bg-white"
+          >
+            <Pencil className="h-4 w-4 text-blue-600" />
+          </button>
+
         </div>
       )}
 
       <Link href={`/properties/${property.id}`}>
         <Card className="group h-full overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-          
+
           <div className="relative aspect-[4/3] overflow-hidden">
 
             {imageSrc ? (
@@ -171,8 +206,28 @@ export function PropertyCard({ property }: { property: Property }) {
               {property.phone}
             </div>
           </CardContent>
+
         </Card>
       </Link>
+
+      {/* 🔥 EDIT POPUP */}
+      <Dialog open={openEdit} onOpenChange={setOpenEdit}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0">
+          <DialogHeader>
+            <DialogTitle>Edit Property</DialogTitle>
+          </DialogHeader>
+
+          <PropertyForm
+  property={property}
+  isEdit
+  onSuccess={() => {
+    setOpenEdit(false)   // 🔥 popup close
+    router.refresh()     // 🔥 updated data reload
+  }}
+/>
+        </DialogContent>
+      </Dialog>
+
     </div>
   )
 }

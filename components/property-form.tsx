@@ -20,87 +20,111 @@ const propertyTypes = [
 
 type PropertyType = (typeof propertyTypes)[number]["value"]
 
-export function PropertyForm() {
+export function PropertyForm({
+  property,
+  isEdit = false,
+  onSuccess,
+}: {
+  property?: any
+  isEdit?: boolean
+  onSuccess?: () => void
+}) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [selectedType, setSelectedType] = useState<PropertyType>("Flat")
-  const [imageUrls, setImageUrls] = useState<string[]>([])
+
+  const [selectedType, setSelectedType] = useState<PropertyType>(
+    property?.type || "Flat"
+  )
+
+  const [imageUrls, setImageUrls] = useState<string[]>(
+    property?.images || []
+  )
+
+  const [title, setTitle] = useState(property?.title || "")
+  const [price, setPrice] = useState(property?.price || "")
+  const [location, setLocation] = useState(property?.location || "")
+  const [description, setDescription] = useState(property?.description || "")
+  const [phone, setPhone] = useState(property?.phone || "")
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setIsSubmitting(true)
     setError(null)
 
-    const formData = new FormData(e.currentTarget)
+    const supabase = createClient()
 
-    
+    const propertyData = {
+      title,
+      price: Number(price),
+      location,
+      type: selectedType,
+      description,
+      image_url: imageUrls[0] || null,
+      images: imageUrls.length > 0 ? imageUrls : null,
+      phone,
+    }
 
-   const property = {
-  title: formData.get("title") as string,
-  price: Number(formData.get("price")),
-  location: formData.get("location") as string,
-  type: selectedType,
-  description: formData.get("description") as string,
-  image_url: imageUrls[0] || null,   // keep for fallback
-  images: imageUrls.length > 0 ? imageUrls : null, // 🔥 ADD THIS
-  phone: formData.get("phone") as string,
-}
     try {
-      const supabase = createClient()
-      const { error: insertError } = await supabase.from("properties").insert(property)
+      if (isEdit) {
+        const { error } = await supabase
+          .from("properties")
+          .update(propertyData)
+          .eq("id", property.id)
 
-      if (insertError) {
-        throw new Error(insertError.message)
+        if (error) throw error
+
+        alert("Updated successfully ✅")
+        onSuccess?.()
+      } else {
+        const { error } = await supabase
+          .from("properties")
+          .insert(propertyData)
+
+        if (error) throw error
+
+        router.push("/properties")
+        router.refresh()
       }
-
-      router.push("/properties")
-      router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to post property")
+      setError(err instanceof Error ? err.message : "Failed")
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <Card>
+    <Card className="border-0 shadow-none">
       <CardContent className="p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
+
           {/* Title */}
           <div className="space-y-2">
-            <Label htmlFor="title">Property Title *</Label>
+            <Label>Property Title *</Label>
             <Input
-              id="title"
-              name="title"
-              placeholder="e.g., Modern 3BHK Apartment in Koramangala"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               required
             />
           </div>
 
           {/* Price */}
           <div className="space-y-2">
-            <Label htmlFor="price">Price (in INR) *</Label>
+            <Label>Price (in INR) *</Label>
             <Input
-              id="price"
-              name="price"
               type="number"
-              placeholder="e.g., 8500000"
-              min="0"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
               required
             />
-            <p className="text-xs text-muted-foreground">
-              Enter the full amount in rupees (e.g., 85 lakhs = 8500000)
-            </p>
           </div>
 
           {/* Location */}
           <div className="space-y-2">
-            <Label htmlFor="location">Location *</Label>
+            <Label>Location *</Label>
             <Input
-              id="location"
-              name="location"
-              placeholder="e.g., Indiranagar, Bangalore"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               required
             />
           </div>
@@ -112,20 +136,21 @@ export function PropertyForm() {
               {propertyTypes.map((type) => {
                 const Icon = type.icon
                 const isSelected = selectedType === type.value
+
                 return (
                   <button
                     key={type.value}
                     type="button"
                     onClick={() => setSelectedType(type.value)}
                     className={cn(
-                      "flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all",
+                      "flex flex-col items-center gap-2 rounded-lg border-2 p-4",
                       isSelected
                         ? "border-primary bg-primary/5 text-primary"
-                        : "border-border hover:border-primary/50"
+                        : "border-border"
                     )}
                   >
                     <Icon className="h-6 w-6" />
-                    <span className="text-sm font-medium">{type.label}</span>
+                    <span>{type.label}</span>
                   </button>
                 )
               })}
@@ -134,52 +159,49 @@ export function PropertyForm() {
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label>Description</Label>
             <Textarea
-              id="description"
-              name="description"
-              placeholder="Describe your property (amenities, features, etc.)"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               rows={4}
             />
           </div>
 
-          {/* Property Image */}
+          {/* Images */}
           <div className="space-y-2">
-            <Label>Property Image</Label>
-            <ImageUpload values={imageUrls} onChange={setImageUrls} maxImages={4} />
+            <Label>Property Images</Label>
+            <ImageUpload
+              values={imageUrls}
+              onChange={setImageUrls}
+              maxImages={4}
+            />
             <p className="text-xs text-muted-foreground">
-              Upload up to 4 photos of your property (max 5MB each)
+              Upload up to 4 images
             </p>
           </div>
 
           {/* Phone */}
           <div className="space-y-2">
-            <Label htmlFor="phone">Contact Phone Number *</Label>
+            <Label>Contact Phone Number *</Label>
             <Input
-              id="phone"
-              name="phone"
-              type="tel"
-              placeholder="e.g., 9876543210"
-              pattern="[0-9]{10}"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               required
             />
-            
-            <p className="text-xs text-muted-foreground">
-              Enter a 10-digit phone number
-            </p>
           </div>
 
-          {/* Error Message */}
+          {/* Error */}
           {error && (
-            <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
-              {error}
-            </div>
+            <p className="text-red-500 text-sm">{error}</p>
           )}
 
-          {/* Submit Button */}
-          <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
-            {isSubmitting ? "Posting..." : "Post Property"}
+          {/* Submit */}
+          <Button type="submit" className="w-full">
+            {isSubmitting
+              ? isEdit ? "Updating..." : "Posting..."
+              : isEdit ? "Update Property" : "Post Property"}
           </Button>
+
         </form>
       </CardContent>
     </Card>
