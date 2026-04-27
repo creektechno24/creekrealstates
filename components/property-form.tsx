@@ -74,7 +74,6 @@ export function PropertyForm({
 
         if (error) throw error
 
-        alert("Updated successfully ✅")
         onSuccess?.()
       } else {
         const { error } = await supabase
@@ -95,43 +94,48 @@ export function PropertyForm({
 
   return (
     <Card className="border-0 shadow-none">
-      <CardContent className="p-6">
+      <CardContent className="p-6 space-y-6">
+
         <form onSubmit={handleSubmit} className="space-y-6">
 
           {/* Title */}
           <div className="space-y-2">
-            <Label>Property Title *</Label>
+            <Label className="text-sm font-medium">Property Title *</Label>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              className="h-11 rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20"
               required
             />
           </div>
 
           {/* Price */}
           <div className="space-y-2">
-            <Label>Price (in INR) *</Label>
+            <Label className="text-sm font-medium">Price (in INR) *</Label>
             <Input
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
+              className="h-11 rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20"
               required
             />
           </div>
 
           {/* Location */}
           <div className="space-y-2">
-            <Label>Location *</Label>
+            <Label className="text-sm font-medium">Location *</Label>
             <Input
               value={location}
               onChange={(e) => setLocation(e.target.value)}
+              className="h-11 rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20"
               required
             />
           </div>
 
           {/* Property Type */}
           <div className="space-y-2">
-            <Label>Property Type *</Label>
+            <Label className="text-sm font-medium">Property Type *</Label>
+
             <div className="grid grid-cols-3 gap-3">
               {propertyTypes.map((type) => {
                 const Icon = type.icon
@@ -143,14 +147,19 @@ export function PropertyForm({
                     type="button"
                     onClick={() => setSelectedType(type.value)}
                     className={cn(
-                      "flex flex-col items-center gap-2 rounded-lg border-2 p-4",
+                      "flex flex-col items-center justify-center gap-2 p-4 border rounded-xl transition-all duration-200 hover:shadow-md hover:border-primary",
                       isSelected
-                        ? "border-primary bg-primary/5 text-primary"
-                        : "border-border"
+                        ? "border-primary bg-primary/10 shadow-sm"
+                        : "border-gray-200 bg-white"
                     )}
                   >
-                    <Icon className="h-6 w-6" />
-                    <span>{type.label}</span>
+                    <Icon
+                      className={cn(
+                        "h-5 w-5",
+                        isSelected ? "text-primary" : "text-gray-500"
+                      )}
+                    />
+                    <span className="text-sm font-medium">{type.label}</span>
                   </button>
                 )
               })}
@@ -159,22 +168,26 @@ export function PropertyForm({
 
           {/* Description */}
           <div className="space-y-2">
-            <Label>Description</Label>
+            <Label className="text-sm font-medium">Description</Label>
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              rows={4}
+              className="rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
 
           {/* Images */}
           <div className="space-y-2">
-            <Label>Property Images</Label>
-            <ImageUpload
-              values={imageUrls}
-              onChange={setImageUrls}
-              maxImages={4}
-            />
+            <Label className="text-sm font-medium">Property Images</Label>
+
+            <div className="border-2 border-dashed rounded-xl p-4 hover:border-primary transition">
+              <ImageUpload
+                values={imageUrls}
+                onChange={setImageUrls}
+                maxImages={4}
+              />
+            </div>
+
             <p className="text-xs text-muted-foreground">
               Upload up to 4 images
             </p>
@@ -182,21 +195,27 @@ export function PropertyForm({
 
           {/* Phone */}
           <div className="space-y-2">
-            <Label>Contact Phone Number *</Label>
+            <Label className="text-sm font-medium">
+              Contact Phone Number *
+            </Label>
             <Input
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              className="h-11 rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20"
               required
             />
           </div>
 
           {/* Error */}
           {error && (
-            <p className="text-red-500 text-sm">{error}</p>
+            <p className="text-sm text-red-500">{error}</p>
           )}
 
           {/* Submit */}
-          <Button type="submit" className="w-full">
+          <Button
+            type="submit"
+            className="w-full h-11 text-base font-medium rounded-lg"
+          >
             {isSubmitting
               ? isEdit ? "Updating..." : "Posting..."
               : isEdit ? "Update Property" : "Post Property"}

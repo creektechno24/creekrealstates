@@ -98,12 +98,13 @@ export function Header() {
           )}
 
           {/* Logout */}
-          {!loading && user && (
+          {/*{!loading && user && (
             <Button variant="outline" onClick={handleLogout} className="gap-2">
               <LogOut className="h-4 w-4" />
               Logout
             </Button>
           )}
+            */}
             
 
         </div>
