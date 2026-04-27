@@ -176,9 +176,9 @@ export function PropertyCard({ property }: { property: Property }) {
               {property.type}
             </Badge>
 
-            <div className="absolute right-3 top-12 rounded-full bg-white/80 p-2 backdrop-blur">
+            {/*<div className="absolute right-3 top-12 rounded-full bg-white/80 p-2 backdrop-blur">
               <Heart className="h-4 w-4 text-gray-700" />
-            </div>
+            </div>*/}
 
             {imageCount > 1 && (
               <span className="absolute bottom-3 right-3 rounded bg-black/70 px-2 py-1 text-xs text-white">
