@@ -43,14 +43,14 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
-        {/* 🔥 LOGO FIXED */}
+        {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/images/logo.jpg"   // ✅ CORRECT PATH
+            src="/images/logo.jpg"
             alt="Creek Real Estates"
             width={40}
             height={40}
-            style={{ height: "auto" }} // ✅ warning fix
+            style={{ height: "auto" }}
           />
           <span className="text-xl font-bold">Creek Real Estates</span>
         </Link>
@@ -87,7 +87,7 @@ export function Header() {
         {/* Right Side */}
         <div className="flex items-center gap-3">
 
-          {/* Post Property */}
+          {/* 🔥 SAME AS HERO BUTTON */}
           {!loading && (
             <Link href={user ? "/post-property" : "/login?redirect=/post-property"}>
               <Button className="gap-2">

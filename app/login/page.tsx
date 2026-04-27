@@ -19,7 +19,7 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
 
-    if (email !== "psnprasad.it@gmail.com") {
+    if (email !== "creektechno24@gmail.com") {
       alert("Only admin can login")
       setLoading(false)
       return

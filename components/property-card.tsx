@@ -3,11 +3,13 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import { MapPin, Phone, Home, Building, LandPlot, Heart, Trash2 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { createClient } from "@/lib/supabase/client"
 import { useToast } from "@/hooks/use-toast"
+
 export interface Property {
   id: string
   title: string
@@ -39,15 +41,26 @@ function formatPrice(price: number): string {
   return `₹${price.toLocaleString("en-IN")}`
 }
 
-export function PropertyCard({
-  property,
-  isAdmin = false,
-}: {
-  property: Property
-  isAdmin?: boolean
-}) {
+export function PropertyCard({ property }: { property: Property }) {
   const router = useRouter()
   const { toast } = useToast()
+  const supabase = createClient()
+
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  // 🔥 AUTO ADMIN CHECK
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      const user = data.user
+
+      if (user?.email === "creektechno24@gmail.com") {
+        setIsAdmin(true)
+      } else {
+        setIsAdmin(false)
+      }
+    })
+  }, [])
+
   const TypeIcon = typeIcons[property.type]
 
   const imageSrc =
@@ -57,36 +70,32 @@ export function PropertyCard({
 
   const imageCount = property.images?.length || 0
 
+  // 🔥 DELETE
   async function handleDelete(id: string) {
-  const supabase = createClient()
+    const ok = confirm("Delete this property?")
+    if (!ok) return
 
-  const ok = confirm("Delete this property?")
-  if (!ok) return
+    const { error } = await supabase
+      .from("properties")
+      .delete()
+      .eq("id", id)
 
-  const { error } = await supabase
-    .from("properties")
-    .delete()
-    .eq("id", id)
+    if (error) {
+      toast({
+        title: "Error ❌",
+        description: "Failed to delete property",
+        variant: "destructive",
+      })
+      return
+    }
 
-  if (error) {
     toast({
-      title: "Error ❌",
-      description: "Failed to delete property",
-      variant: "destructive",
+      title: "Deleted successfully ✅",
+      description: "Property removed",
     })
-    return
+
+    router.refresh()
   }
-
-  // 🔥 TOAST FIRST
-  toast({
-    title: "Deleted successfully ✅",
-    description: "Property removed",
-  })
-
-  // 🔥 THEN REFRESH
-  router.refresh()
-}
- 
 
   return (
     <div className="relative">

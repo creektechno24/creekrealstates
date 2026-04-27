@@ -92,7 +92,7 @@ export default async function PropertiesPage({
   } = await supabase.auth.getUser()
 
   // 🔥 ADMIN CHECK
-  const isAdmin = user?.email === "psnprasad.it@gmail.com"
+  const isAdmin = user?.email === "creektechno24@gmail.com"
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
