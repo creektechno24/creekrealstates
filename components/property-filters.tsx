@@ -58,47 +58,55 @@ export function PropertyFilters() {
   }
 
   return (
-    <div className="mb-8 space-y-4">
-      {/* Search Bar */}
+    <div className="mb-8 space-y-5">
+
+      {/* 🔍 Search Bar */}
       <form onSubmit={handleSearch} className="flex gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <Input
             type="text"
             placeholder="Search by location..."
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
-            className="pl-10"
+            className="pl-10 h-11 bg-white border-gray-300 focus:ring-2 focus:ring-primary/20 rounded-lg"
           />
         </div>
-        <Button type="submit" disabled={isPending}>
+
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="h-11 px-6 bg-primary hover:bg-primary/90 text-white rounded-lg"
+        >
           {isPending ? "Searching..." : "Search"}
         </Button>
       </form>
 
-      {/* Type Filters */}
-      <div className="flex flex-wrap gap-2">
+      {/* 🏷 Type Filters */}
+      <div className="flex flex-wrap gap-3">
         {propertyTypes.map((type) => {
           const Icon = type.icon
           const isActive = currentType === type.value
+
           return (
-            <Button
+            <button
               key={type.value}
-              variant={isActive ? "default" : "outline"}
-              size="sm"
               onClick={() => handleTypeChange(type.value)}
               disabled={isPending}
               className={cn(
-                "gap-2",
-                isActive && "bg-primary text-primary-foreground"
+                "flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-all duration-200",
+                isActive
+                  ? "bg-primary text-white border-primary shadow-sm"
+                  : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
               )}
             >
               <Icon className="h-4 w-4" />
               {type.label}
-            </Button>
+            </button>
           )
         })}
       </div>
+
     </div>
   )
 }

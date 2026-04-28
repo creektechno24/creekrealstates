@@ -51,12 +51,12 @@ async function PropertiesContent({
 
   if (properties.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-border bg-muted/50 p-12 text-center">
-        <p className="text-lg text-muted-foreground">
+      <div className="rounded-2xl border border-dashed border-gray-300 bg-gray-100 p-12 text-center">
+        <p className="text-lg font-medium text-gray-600">
           No properties found
           {searchParams.search ? ` in "${searchParams.search}"` : ""}.
         </p>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm text-gray-500">
           Try adjusting your search or filters.
         </p>
       </div>
@@ -64,12 +64,12 @@ async function PropertiesContent({
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {properties.map((property) => (
         <PropertyCard
           key={property.id}
           property={property}
-          isAdmin={isAdmin} // 🔥 pass admin
+          isAdmin={isAdmin}
         />
       ))}
     </div>
@@ -86,44 +86,47 @@ export default async function PropertiesPage({
 
   const supabase = await createClient()
 
-  // 🔐 GET USER
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // 🔥 ADMIN CHECK
   const isAdmin = user?.email === "creektechno24@gmail.com"
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      
-      {/* Heading */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">
-          All Properties
-        </h1>
-        <p className="mt-2 text-muted-foreground">
-          Browse through our collection of houses, flats, and land
-        </p>
+    <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+
+        {/* Heading */}
+        <div className="mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">
+            All Properties
+          </h1>
+
+          <p className="mt-2 text-gray-500 max-w-xl">
+            Explore our curated collection of houses, flats, and land listings across prime locations.
+          </p>
+        </div>
+
+        {/* Filters */}
+        <div className="mb-10">
+          <PropertyFilters />
+        </div>
+
+        {/* Content */}
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center py-24">
+              <Spinner className="h-8 w-8" />
+            </div>
+          }
+        >
+          <PropertiesContent
+            searchParams={params}
+            isAdmin={isAdmin}
+          />
+        </Suspense>
+
       </div>
-
-      {/* Filters */}
-      <PropertyFilters />
-
-      {/* Content */}
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center py-20">
-            <Spinner className="h-8 w-8" />
-          </div>
-        }
-      >
-        <PropertiesContent
-          searchParams={params}
-          isAdmin={isAdmin} // 🔥 pass here
-        />
-      </Suspense>
-
     </div>
   )
 }

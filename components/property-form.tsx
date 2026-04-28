@@ -52,6 +52,31 @@ export function PropertyForm({
     setIsSubmitting(true)
     setError(null)
 
+    // 🔥 MINIMUM VALIDATIONS
+if (!title.trim()) {
+  setError("Title is required")
+  setIsSubmitting(false)
+  return
+}
+
+if (!price || Number(price) <= 0) {
+  setError("Enter valid price")
+  setIsSubmitting(false)
+  return
+}
+
+if (!location.trim()) {
+  setError("Location is required")
+  setIsSubmitting(false)
+  return
+}
+
+if (!/^[6-9]\d{9}$/.test(phone)) {
+  setError("Enter valid phone number")
+  setIsSubmitting(false)
+  return
+}
+
     const supabase = createClient()
 
     const propertyData = {

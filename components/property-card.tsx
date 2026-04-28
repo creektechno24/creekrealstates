@@ -10,7 +10,6 @@ import {
   Home,
   Building,
   LandPlot,
-  Heart,
   Trash2,
   Pencil,
 } from "lucide-react"
@@ -20,7 +19,6 @@ import { Badge } from "@/components/ui/badge"
 import { createClient } from "@/lib/supabase/client"
 import { useToast } from "@/hooks/use-toast"
 
-// 🔥 ADD
 import {
   Dialog,
   DialogContent,
@@ -66,18 +64,12 @@ export function PropertyCard({ property }: { property: Property }) {
   const supabase = createClient()
 
   const [isAdmin, setIsAdmin] = useState(false)
-  const [openEdit, setOpenEdit] = useState(false) // 🔥 NEW
+  const [openEdit, setOpenEdit] = useState(false)
 
-  // 🔥 ADMIN CHECK
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       const user = data.user
-
-      if (user?.email === "creektechno24@gmail.com") {
-        setIsAdmin(true)
-      } else {
-        setIsAdmin(false)
-      }
+      setIsAdmin(user?.email === "creektechno24@gmail.com")
     })
   }, [])
 
@@ -90,7 +82,6 @@ export function PropertyCard({ property }: { property: Property }) {
 
   const imageCount = property.images?.length || 0
 
-  // ✅ WORKING DELETE
   async function handleDelete(id: string) {
     const ok = confirm("Delete this property?")
     if (!ok) return
@@ -120,30 +111,28 @@ export function PropertyCard({ property }: { property: Property }) {
   return (
     <div className="relative">
 
-      {/* 🔥 DELETE */}
+      {/* ADMIN ACTIONS */}
       {isAdmin && (
         <div className="absolute right-3 top-3 z-20 flex gap-2">
 
-          {/* DELETE */}
           <button
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
               handleDelete(property.id)
             }}
-            className="rounded-full bg-white/80 p-2 backdrop-blur hover:bg-white"
+            className="rounded-full bg-white shadow-md p-2 hover:scale-105 transition"
           >
             <Trash2 className="h-4 w-4 text-red-600" />
           </button>
 
-          {/* EDIT */}
           <button
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
               setOpenEdit(true)
             }}
-            className="rounded-full bg-white/80 p-2 backdrop-blur hover:bg-white"
+            className="rounded-full bg-white shadow-md p-2 hover:scale-105 transition"
           >
             <Pencil className="h-4 w-4 text-blue-600" />
           </button>
@@ -152,8 +141,9 @@ export function PropertyCard({ property }: { property: Property }) {
       )}
 
       <Link href={`/properties/${property.id}`}>
-        <Card className="group h-full overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+        <Card className="group h-full overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
 
+          {/* IMAGE */}
           <div className="relative aspect-[4/3] overflow-hidden">
 
             {imageSrc ? (
@@ -164,8 +154,8 @@ export function PropertyCard({ property }: { property: Property }) {
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
               />
             ) : (
-              <div className="flex h-full items-center justify-center bg-muted">
-                <Building className="h-16 w-16 text-muted-foreground/50" />
+              <div className="flex h-full items-center justify-center bg-gray-100">
+                <Building className="h-16 w-16 text-gray-400" />
               </div>
             )}
 
@@ -176,10 +166,6 @@ export function PropertyCard({ property }: { property: Property }) {
               {property.type}
             </Badge>
 
-            {/*<div className="absolute right-3 top-12 rounded-full bg-white/80 p-2 backdrop-blur">
-              <Heart className="h-4 w-4 text-gray-700" />
-            </div>*/}
-
             {imageCount > 1 && (
               <span className="absolute bottom-3 right-3 rounded bg-black/70 px-2 py-1 text-xs text-white">
                 +{imageCount}
@@ -187,46 +173,49 @@ export function PropertyCard({ property }: { property: Property }) {
             )}
           </div>
 
-          <CardContent className="p-4">
-            <p className="text-2xl font-bold text-primary">
+          {/* CONTENT */}
+          <CardContent className="p-4 space-y-2">
+
+            <p className="text-2xl font-bold text-green-700">
               {formatPrice(property.price)}
             </p>
 
-            <h3 className="mt-1 line-clamp-1 text-lg font-semibold group-hover:text-primary">
+            <h3 className="line-clamp-1 text-lg font-semibold text-gray-900 group-hover:text-primary transition">
               {property.title}
             </h3>
 
-            <div className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1 text-sm text-gray-500">
               <MapPin className="h-4 w-4" />
               {property.location}
             </div>
 
-            <div className="mt-3 flex items-center gap-1 text-sm">
+            <div className="flex items-center gap-1 text-sm text-gray-700">
               <Phone className="h-4 w-4 text-primary" />
               {property.phone}
             </div>
+
           </CardContent>
 
         </Card>
       </Link>
 
-      {/* 🔥 EDIT POPUP */}
+      {/* EDIT POPUP */}
       <Dialog open={openEdit} onOpenChange={setOpenEdit}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 rounded-2xl shadow-2xl">
-         <DialogHeader className="px-6 pt-6 pb-2 border-b">
-  <DialogTitle className="text-xl font-semibold">
-    Edit Property
-  </DialogTitle>
-</DialogHeader>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 rounded-2xl shadow-2xl bg-white">
+          <DialogHeader className="px-6 pt-6 pb-2 border-b">
+            <DialogTitle className="text-xl font-semibold text-gray-900">
+              Edit Property
+            </DialogTitle>
+          </DialogHeader>
 
           <PropertyForm
-  property={property}
-  isEdit
-  onSuccess={() => {
-    setOpenEdit(false)   // 🔥 popup close
-    router.refresh()     // 🔥 updated data reload
-  }}
-/>
+            property={property}
+            isEdit
+            onSuccess={() => {
+              setOpenEdit(false)
+              router.refresh()
+            }}
+          />
         </DialogContent>
       </Dialog>
 
