@@ -32,7 +32,7 @@ export default async function EditPropertyPage({
     redirect("/login")
   }
 
-  // ❌ not admin (CHANGE EMAIL)
+  // ❌ not admin
   if (user.email !== "newadmin@gmail.com") {
     redirect("/")
   }
@@ -42,11 +42,25 @@ export default async function EditPropertyPage({
   if (!property) notFound()
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
-      <h1 className="text-2xl font-bold mb-6">Edit Property</h1>
+    <div className="min-h-screen bg-gray-50">
 
-      <div className="rounded-xl bg-white p-6 shadow-xl">
-        <PropertyForm property={property} isEdit />
+      <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+
+        {/* 🔥 Header Section */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">
+            Edit Property
+          </h1>
+          <p className="mt-2 text-gray-500">
+            Update property details and save changes.
+          </p>
+        </div>
+
+        {/* 🔥 Form Card */}
+        <div className="rounded-2xl bg-white p-6 sm:p-8 shadow-xl border">
+          <PropertyForm property={property} isEdit />
+        </div>
+
       </div>
     </div>
   )

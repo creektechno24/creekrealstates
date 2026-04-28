@@ -201,13 +201,12 @@ export function PropertyCard({ property }: { property: Property }) {
 
       {/* EDIT POPUP */}
       <Dialog open={openEdit} onOpenChange={setOpenEdit}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 rounded-2xl shadow-2xl bg-white">
-          <DialogHeader className="px-6 pt-6 pb-2 border-b">
-            <DialogTitle className="text-xl font-semibold text-gray-900">
-              Edit Property
-            </DialogTitle>
-          </DialogHeader>
-
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 rounded-2xl shadow-2xl bg-white [&>button]:top-4 [&>button]:right-4">
+           <DialogHeader className="flex items-center justify-between px-6 py-4 border-b">
+  <DialogTitle className="text-lg font-semibold text-gray-900">
+    Edit Property
+  </DialogTitle>
+</DialogHeader>
           <PropertyForm
             property={property}
             isEdit
