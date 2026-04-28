@@ -52,30 +52,10 @@ export function PropertyForm({
     setIsSubmitting(true)
     setError(null)
 
-    // 🔥 MINIMUM VALIDATIONS
-if (!title.trim()) {
-  setError("Title is required")
-  setIsSubmitting(false)
-  return
-}
-
-if (!price || Number(price) <= 0) {
-  setError("Enter valid price")
-  setIsSubmitting(false)
-  return
-}
-
-if (!location.trim()) {
-  setError("Location is required")
-  setIsSubmitting(false)
-  return
-}
-
-if (!/^[6-9]\d{9}$/.test(phone)) {
-  setError("Enter valid phone number")
-  setIsSubmitting(false)
-  return
-}
+    if (!title.trim()) return setError("Title is required"), setIsSubmitting(false)
+    if (!price || Number(price) <= 0) return setError("Enter valid price"), setIsSubmitting(false)
+    if (!location.trim()) return setError("Location is required"), setIsSubmitting(false)
+    if (!/^[6-9]\d{9}$/.test(phone)) return setError("Enter valid phone number"), setIsSubmitting(false)
 
     const supabase = createClient()
 
@@ -98,8 +78,8 @@ if (!/^[6-9]\d{9}$/.test(phone)) {
           .eq("id", property.id)
 
         if (error) throw error
-  alert("Updated successfully ✅")   // 🔥 ADD THIS
 
+        alert("Updated successfully ✅")
         onSuccess?.()
       } else {
         const { error } = await supabase
@@ -119,50 +99,56 @@ if (!/^[6-9]\d{9}$/.test(phone)) {
   }
 
   return (
-    <Card className="border-0 shadow-none">
-      <CardContent className="p-6 space-y-6">
+    <Card className="rounded-2xl shadow-xl border bg-white">
+      <CardContent className="p-8 space-y-8">
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-8">
 
-          {/* Title */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Property Title *</Label>
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="h-11 rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20"
-              required
-            />
+          {/* BASIC INFO */}
+          <div className="space-y-5">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Basic Information
+            </h2>
+
+            <div className="space-y-2">
+              <Label>Property Title *</Label>
+              <Input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="h-11 rounded-lg border-gray-300 focus:ring-2 focus:ring-primary/20"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Price (in INR) *</Label>
+              <Input
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className="h-11 rounded-lg border-gray-300 focus:ring-2 focus:ring-primary/20"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Location *</Label>
+              <Input
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                className="h-11 rounded-lg border-gray-300 focus:ring-2 focus:ring-primary/20"
+                required
+              />
+            </div>
           </div>
 
-          {/* Price */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Price (in INR) *</Label>
-            <Input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              className="h-11 rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20"
-              required
-            />
-          </div>
+          {/* TYPE */}
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Property Type
+            </h2>
 
-          {/* Location */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Location *</Label>
-            <Input
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="h-11 rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20"
-              required
-            />
-          </div>
-
-          {/* Property Type */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Property Type *</Label>
-
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-4">
               {propertyTypes.map((type) => {
                 const Icon = type.icon
                 const isSelected = selectedType === type.value
@@ -173,74 +159,64 @@ if (!/^[6-9]\d{9}$/.test(phone)) {
                     type="button"
                     onClick={() => setSelectedType(type.value)}
                     className={cn(
-                      "flex flex-col items-center justify-center gap-2 p-4 border rounded-xl transition-all duration-200 hover:shadow-md hover:border-primary",
+                      "flex flex-col items-center gap-2 p-5 border rounded-xl transition-all hover:shadow-md",
                       isSelected
-                        ? "border-primary bg-primary/10 shadow-sm"
+                        ? "border-primary bg-primary/10"
                         : "border-gray-200 bg-white"
                     )}
                   >
-                    <Icon
-                      className={cn(
-                        "h-5 w-5",
-                        isSelected ? "text-primary" : "text-gray-500"
-                      )}
-                    />
-                    <span className="text-sm font-medium">{type.label}</span>
+                    <Icon className="h-5 w-5" />
+                    <span>{type.label}</span>
                   </button>
                 )
               })}
             </div>
           </div>
 
-          {/* Description */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Description</Label>
-            <Textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20"
-            />
-          </div>
+          {/* DETAILS */}
+          <div className="space-y-5">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Additional Details
+            </h2>
 
-          {/* Images */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Property Images</Label>
-
-            <div className="border-2 border-dashed rounded-xl p-4 hover:border-primary transition">
-              <ImageUpload
-                values={imageUrls}
-                onChange={setImageUrls}
-                maxImages={4}
+            <div className="space-y-2">
+              <Label>Description</Label>
+              <Textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="rounded-lg border-gray-300 focus:ring-2 focus:ring-primary/20"
               />
             </div>
 
-            <p className="text-xs text-muted-foreground">
-              Upload up to 4 images
-            </p>
+            <div className="space-y-2">
+              <Label>Property Images</Label>
+              <div className="border-2 border-dashed rounded-xl p-6 hover:border-primary transition">
+                <ImageUpload
+                  values={imageUrls}
+                  onChange={setImageUrls}
+                  maxImages={4}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Contact Phone Number *</Label>
+              <Input
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="h-11 rounded-lg border-gray-300 focus:ring-2 focus:ring-primary/20"
+                required
+              />
+            </div>
           </div>
 
-          {/* Phone */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">
-              Contact Phone Number *
-            </Label>
-            <Input
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="h-11 rounded-lg border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20"
-              required
-            />
-          </div>
-
-          {/* Error */}
           {error && (
             <p className="text-sm text-red-500">{error}</p>
           )}
 
-          {/* Submit */}
           <Button
             type="submit"
-            className="w-full h-11 text-base font-medium rounded-lg"
+            className="w-full h-12 text-base font-semibold rounded-xl"
           >
             {isSubmitting
               ? isEdit ? "Updating..." : "Posting..."
