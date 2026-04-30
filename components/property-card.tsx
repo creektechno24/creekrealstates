@@ -112,6 +112,7 @@ export function PropertyCard({ property }: { property: Property }) {
     <div className="relative">
 
       {/* ADMIN ACTIONS */}
+      {/*
       {isAdmin && (
         <div className="absolute right-3 top-3 z-20 flex gap-2">
 
@@ -139,6 +140,8 @@ export function PropertyCard({ property }: { property: Property }) {
 
         </div>
       )}
+
+      */}  
 
       <Link href={`/properties/${property.id}`}>
         <Card className="group h-full overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
