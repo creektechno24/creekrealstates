@@ -98,7 +98,7 @@ export function Header() {
           )}
 
           {/* Logout */}
-          {/*
+          
           {!loading && user && (
             <Button variant="outline" onClick={handleLogout} className="gap-2">
               <LogOut className="h-4 w-4" />
@@ -106,7 +106,7 @@ export function Header() {
             </Button>
           )}
 
-          */}
+          
             
             
 
