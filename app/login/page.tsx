@@ -14,13 +14,15 @@ export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
+    setErrorMsg("")
 
     if (email !== "creektechno24@gmail.com") {
-      alert("Only admin can login")
+      setErrorMsg("Only admin can login")
       setLoading(false)
       return
     }
@@ -31,7 +33,7 @@ export default function LoginPage() {
     })
 
     if (error) {
-      alert("Invalid credentials")
+      setErrorMsg("Invalid email or password")
       setLoading(false)
       return
     }
@@ -55,16 +57,14 @@ export default function LoginPage() {
             className="h-full w-full object-cover"
           />
 
-          {/* soft gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
-          {/* text */}
           <div className="absolute bottom-8 left-8 text-white">
             <h2 className="text-2xl font-semibold mb-1">
-              Find Your Dream Home
+              Post Your properties
             </h2>
             <p className="text-sm opacity-80">
-              Premium properties, trusted deals.
+              Post properties, trusted deals.
             </p>
           </div>
         </div>
@@ -82,6 +82,14 @@ export default function LoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-5">
 
+            {/* 🔴 ERROR MESSAGE */}
+            {errorMsg && (
+              <p className="text-red-500 text-sm font-medium bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
+                {errorMsg}
+              </p>
+            )}
+
+            {/* EMAIL */}
             <input
               type="email"
               placeholder="Enter your email"
@@ -91,6 +99,7 @@ export default function LoginPage() {
                 focus:ring-2 focus:ring-primary outline-none transition bg-white/80"
             />
 
+            {/* PASSWORD */}
             <input
               type="password"
               placeholder="Enter your password"
@@ -100,6 +109,7 @@ export default function LoginPage() {
                 focus:ring-2 focus:ring-primary outline-none transition bg-white/80"
             />
 
+            {/* BUTTON */}
             <button
               type="submit"
               className="w-full bg-primary text-white py-3 rounded-lg font-semibold

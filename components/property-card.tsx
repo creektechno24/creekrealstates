@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import {
   MapPin,
   Phone,
@@ -58,20 +58,18 @@ function formatPrice(price: number): string {
   return `₹${price.toLocaleString("en-IN")}`
 }
 
-export function PropertyCard({ property }: { property: Property }) {
+export function PropertyCard({
+  property,
+  isAdmin = false,
+}: {
+  property: Property
+  isAdmin?: boolean
+}) {
   const router = useRouter()
   const { toast } = useToast()
   const supabase = createClient()
 
-  const [isAdmin, setIsAdmin] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      const user = data.user
-      setIsAdmin(user?.email === "creektechno24@gmail.com")
-    })
-  }, [])
 
   const TypeIcon = typeIcons[property.type]
 
@@ -112,7 +110,6 @@ export function PropertyCard({ property }: { property: Property }) {
     <div className="relative">
 
       {/* ADMIN ACTIONS */}
-      {/*
       {isAdmin && (
         <div className="absolute right-3 top-3 z-20 flex gap-2">
 
@@ -140,8 +137,6 @@ export function PropertyCard({ property }: { property: Property }) {
 
         </div>
       )}
-
-      */}  
 
       <Link href={`/properties/${property.id}`}>
         <Card className="group h-full overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
@@ -204,12 +199,13 @@ export function PropertyCard({ property }: { property: Property }) {
 
       {/* EDIT POPUP */}
       <Dialog open={openEdit} onOpenChange={setOpenEdit}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 rounded-2xl shadow-2xl bg-white [&>button]:top-4 [&>button]:right-4">
-           <DialogHeader className="flex items-center justify-between px-6 py-4 border-b">
-  <DialogTitle className="text-lg font-semibold text-gray-900">
-    Edit Property
-  </DialogTitle>
-</DialogHeader>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 rounded-2xl shadow-2xl bg-white">
+          <DialogHeader className="px-6 py-4 border-b">
+            <DialogTitle className="text-lg font-semibold">
+              Edit Property
+            </DialogTitle>
+          </DialogHeader>
+
           <PropertyForm
             property={property}
             isEdit

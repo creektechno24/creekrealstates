@@ -42,8 +42,10 @@ async function getProperties(searchParams: SearchParams): Promise<Property[]> {
 // 🔥 CONTENT
 async function PropertiesContent({
   searchParams,
+  isAdmin,
 }: {
   searchParams: SearchParams
+  isAdmin: boolean
 }) {
   const properties = await getProperties(searchParams)
 
@@ -67,6 +69,7 @@ async function PropertiesContent({
         <PropertyCard
           key={property.id}
           property={property}
+          isAdmin={isAdmin} // ✅ IMPORTANT FIX
         />
       ))}
     </div>
@@ -83,8 +86,13 @@ export default async function PropertiesPage({
 
   const supabase = await createClient()
 
-  // 🔐 (still fetching user, no issue if unused)
-  await supabase.auth.getUser()
+  // 🔐 GET USER
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  // 🔥 ADMIN CHECK
+  const isAdmin = user?.email === "creektechno24@gmail.com"
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -116,6 +124,7 @@ export default async function PropertiesPage({
         >
           <PropertiesContent
             searchParams={params}
+            isAdmin={isAdmin} // ✅ PASS HERE
           />
         </Suspense>
 
