@@ -14,9 +14,13 @@ export const metadata: Metadata = {
   description: 'Browse and list properties for sale - Houses, Flats, and Land',
   generator: 'v0.app',
   icons: {
-    icon: "/favicon.png",
-    apple: "/favicon.png",
-  },
+  icon: [
+    { url: "/favicon.ico" },
+    { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    { url: "/favicon.svg", type: "image/svg+xml" },
+  ],
+  apple: "/apple-touch-icon.png",
+},
 }
 
 export default function RootLayout({
