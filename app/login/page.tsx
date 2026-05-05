@@ -1,46 +1,47 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import { createClient } from "@/lib/supabase/client"
+export const dynamic = "force-dynamic";
+
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
-  const supabase = createClient()
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const supabase = createClient();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const redirectTo = searchParams.get("redirect") || "/"
+  const redirectTo = searchParams.get("redirect") || "/";
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [errorMsg, setErrorMsg] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   async function handleLogin(e: React.FormEvent) {
-    e.preventDefault()
-    setLoading(true)
-    setErrorMsg("")
+    e.preventDefault();
+    setLoading(true);
+    setErrorMsg("");
 
     if (email !== "creektechno24@gmail.com") {
-      setErrorMsg("Only admin can login")
-      setLoading(false)
-      return
+      setErrorMsg("Only admin can login");
+      setLoading(false);
+      return;
     }
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
-    })
+    });
 
-    // ✅ FIXED HERE (removed 'a')
     if (error) {
-      setErrorMsg("Invalid email or password")
-      setLoading(false)
-      return
+      setErrorMsg("Invalid email or password");
+      setLoading(false);
+      return;
     }
 
-    router.push(redirectTo)
-    router.refresh()
+    router.push(redirectTo);
+    router.refresh();
   }
 
   return (
@@ -98,7 +99,6 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-200 rounded-lg px-4 py-3
                 focus:ring-2 focus:ring-primary outline-none transition bg-white/80"
-              required
             />
 
             {/* PASSWORD */}
@@ -109,7 +109,6 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border border-gray-200 rounded-lg px-4 py-3
                 focus:ring-2 focus:ring-primary outline-none transition bg-white/80"
-              required
             />
 
             {/* BUTTON */}
@@ -117,7 +116,7 @@ export default function LoginPage() {
               type="submit"
               disabled={loading}
               className="w-full bg-primary text-white py-3 rounded-lg font-semibold
-                hover:opacity-90 transition shadow-md disabled:opacity-60"
+                hover:opacity-90 transition shadow-md disabled:opacity-50"
             >
               {loading ? "Logging in..." : "Login"}
             </button>
@@ -127,5 +126,5 @@ export default function LoginPage() {
 
       </div>
     </div>
-  )
+  );
 }
