@@ -32,6 +32,7 @@ export default function LoginPage() {
       password,
     })
 
+    // ✅ FIXED HERE (removed 'a')
     if (error) {
       setErrorMsg("Invalid email or password")
       setLoading(false)
@@ -82,7 +83,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-5">
 
-            {/* 🔴 ERROR MESSAGE */}
+            {/* ERROR MESSAGE */}
             {errorMsg && (
               <p className="text-red-500 text-sm font-medium bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
                 {errorMsg}
@@ -93,27 +94,30 @@ export default function LoginPage() {
             <input
               type="email"
               placeholder="Enter your email"
-              value={email || ""}
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-200 rounded-lg px-4 py-3
                 focus:ring-2 focus:ring-primary outline-none transition bg-white/80"
+              required
             />
 
             {/* PASSWORD */}
             <input
               type="password"
               placeholder="Enter your password"
-              value={password || ""}
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border border-gray-200 rounded-lg px-4 py-3
                 focus:ring-2 focus:ring-primary outline-none transition bg-white/80"
+              required
             />
 
             {/* BUTTON */}
             <button
               type="submit"
+              disabled={loading}
               className="w-full bg-primary text-white py-3 rounded-lg font-semibold
-                hover:opacity-90 transition shadow-md"
+                hover:opacity-90 transition shadow-md disabled:opacity-60"
             >
               {loading ? "Logging in..." : "Login"}
             </button>
