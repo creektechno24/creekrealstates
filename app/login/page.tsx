@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
-export default function LoginPage() {
+export default function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -21,9 +21,6 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setErrorMsg("");
-
-    // 👇 only run on client
-    if (typeof window === "undefined") return;
 
     const supabase = createClient();
 
@@ -49,87 +46,50 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4
-      bg-gradient-to-br from-slate-100 via-white to-slate-200">
+    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4 bg-gradient-to-br from-slate-100 via-white to-slate-200">
 
-      <div className="w-full max-w-5xl backdrop-blur-xl bg-white/80 border border-white/30
-        rounded-2xl shadow-2xl overflow-hidden grid md:grid-cols-2">
+      <div className="w-full max-w-5xl backdrop-blur-xl bg-white/80 border border-white/30 rounded-2xl shadow-2xl overflow-hidden grid md:grid-cols-2">
 
-        {/* LEFT IMAGE */}
         <div className="hidden md:block relative">
           <img
             src="/images/login-bg.jpg"
             alt="Real Estate"
             className="h-full w-full object-cover"
           />
-
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-
-          <div className="absolute bottom-8 left-8 text-white">
-            <h2 className="text-2xl font-semibold mb-1">
-              Post Your properties
-            </h2>
-            <p className="text-sm opacity-80">
-              Post properties, trusted deals.
-            </p>
-          </div>
         </div>
 
-        {/* RIGHT FORM */}
         <div className="p-10 flex flex-col justify-center">
+          <h2 className="text-3xl font-bold mb-4">Admin Login</h2>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome Back
-          </h2>
+          {errorMsg && (
+            <p className="text-red-500 mb-3">{errorMsg}</p>
+          )}
 
-          <p className="text-sm text-gray-500 mb-6">
-            Login to your admin account
-          </p>
-
-          <form onSubmit={handleLogin} className="space-y-5">
-
-            {/* ERROR MESSAGE */}
-            {errorMsg && (
-              <p className="text-red-500 text-sm font-medium bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
-                {errorMsg}
-              </p>
-            )}
-
-            {/* EMAIL */}
+          <form onSubmit={handleLogin} className="space-y-4">
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full border border-gray-200 rounded-lg px-4 py-3
-                focus:ring-2 focus:ring-primary outline-none transition bg-white/80"
+              className="w-full border p-3 rounded"
             />
 
-            {/* PASSWORD */}
             <input
               type="password"
-              placeholder="Enter your password"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full border border-gray-200 rounded-lg px-4 py-3
-                focus:ring-2 focus:ring-primary outline-none transition bg-white/80"
+              className="w-full border p-3 rounded"
             />
 
-            {/* BUTTON */}
             <button
               type="submit"
-              disabled={loading}
-              className="w-full bg-primary text-white py-3 rounded-lg font-semibold
-                hover:opacity-90 transition shadow-md disabled:opacity-50"
+              className="w-full bg-black text-white py-3 rounded"
             >
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Loading..." : "Login"}
             </button>
-
           </form>
         </div>
-
       </div>
     </div>
   );
