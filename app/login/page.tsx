@@ -7,7 +7,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
-  const supabase = createClient();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -22,6 +21,11 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setErrorMsg("");
+
+    // 👇 only run on client
+    if (typeof window === "undefined") return;
+
+    const supabase = createClient();
 
     if (email !== "creektechno24@gmail.com") {
       setErrorMsg("Only admin can login");
@@ -97,6 +101,7 @@ export default function LoginPage() {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
               className="w-full border border-gray-200 rounded-lg px-4 py-3
                 focus:ring-2 focus:ring-primary outline-none transition bg-white/80"
             />
@@ -107,6 +112,7 @@ export default function LoginPage() {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
               className="w-full border border-gray-200 rounded-lg px-4 py-3
                 focus:ring-2 focus:ring-primary outline-none transition bg-white/80"
             />
