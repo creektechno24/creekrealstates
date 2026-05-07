@@ -1,4 +1,3 @@
-import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
@@ -13,8 +12,8 @@ import {
   LandPlot,
   Calendar,
 } from "lucide-react"
+import { FaWhatsapp } from "react-icons/fa"
 
-import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 
 import { createClient } from "@/lib/supabase/server"
@@ -26,21 +25,50 @@ const typeIcons = {
   Flat: Building,
 }
 
+const amenityIcons: Record<string, string> = {
+  Parking: "🚗",
+  Lift: "🛗",
+  Gym: "🏋️",
+  Security: "🛡️",
+  "Swimming Pool": "🏊",
+  "Power Backup": "🔋",
+  Garden: "🌳",
+  "Club House": "🏡",
+  "Children Play Area": "🛝",
+  CCTV: "📹",
+}
+
 function formatPrice(price: number): string {
-  if (price >= 10000000) return `₹${(price / 10000000).toFixed(2)} Cr`
-  if (price >= 100000) return `₹${(price / 100000).toFixed(2)} L`
+
+  if (price >= 10000000) {
+    return `₹${(price / 10000000).toFixed(2)} Cr`
+  }
+
+  if (price >= 100000) {
+    return `₹${(price / 100000).toFixed(2)} L`
+  }
+
   return `₹${price.toLocaleString("en-IN")}`
+
 }
 
 function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("en-IN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  })
+
+  return new Date(dateString).toLocaleDateString(
+    "en-IN",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }
+  )
+
 }
 
-async function getProperty(id: string): Promise<Property | null> {
+async function getProperty(
+  id: string
+): Promise<Property | null> {
+
   const supabase = await createClient()
 
   const { data } = await supabase
@@ -50,6 +78,7 @@ async function getProperty(id: string): Promise<Property | null> {
     .single()
 
   return data as Property
+
 }
 
 export default async function PropertyDetailsPage({
@@ -57,6 +86,7 @@ export default async function PropertyDetailsPage({
 }: {
   params: Promise<{ id: string }>
 }) {
+
   const { id } = await params
 
   const property = await getProperty(id)
@@ -66,7 +96,8 @@ export default async function PropertyDetailsPage({
   const TypeIcon = typeIcons[property.type]
 
   const images =
-    property.images && property.images.length > 0
+    property.images &&
+    property.images.length > 0
       ? property.images
       : property.image_url
       ? [property.image_url]
@@ -74,15 +105,19 @@ export default async function PropertyDetailsPage({
 
   return (
     <div className="min-h-screen bg-gray-50">
+
       <div className="mx-auto max-w-7xl px-4 py-10">
 
-        {/* Back */}
+        {/* BACK */}
         <Link
           href="/properties"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-gray-500 transition hover:text-gray-900"
         >
+
           <ArrowLeft className="h-4 w-4" />
+
           Back to Properties
+
         </Link>
 
         <div className="grid gap-12 lg:grid-cols-3">
@@ -90,103 +125,327 @@ export default async function PropertyDetailsPage({
           {/* LEFT */}
           <div className="lg:col-span-2">
 
-            {/* Images */}
+            {/* GALLERY */}
             {images.length > 0 ? (
-              <div className="rounded-2xl overflow-hidden shadow-sm">
-                <PropertyImagePreview images={images} />
+
+              <div className="overflow-hidden rounded-2xl shadow-sm">
+
+               <PropertyImagePreview
+  images={images}
+  videoUrls={property.video_urls || []}
+/>
+
               </div>
+
             ) : (
-              <div className="flex aspect-video items-center justify-center rounded-xl bg-gray-100">
+
+              <div className="flex aspect-video items-center justify-center rounded-2xl bg-gray-100">
+
                 <Building className="h-20 w-20 text-gray-400" />
+
               </div>
+
             )}
 
-            {/* Title + Price */}
-            <div className="mt-6 mb-4">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            {/* TITLE */}
+            <div className="mt-6">
+
+              <div className="mb-3 flex flex-wrap items-center gap-3">
+
+                <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+
+                  <TypeIcon className="h-4 w-4" />
+
+                  {property.type}
+
+                </div>
+
+              
+                <div className="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700">
+
+                  📅 {formatDate(property.created_at)}
+
+                </div>
+
+              </div>
+
+              <h1 className="text-3xl font-bold text-gray-900">
+
                 {property.title}
+
               </h1>
 
-              <p className="mt-2 text-2xl font-bold text-green-700">
+              <p className="mt-3 text-3xl font-bold text-green-700">
+
                 {formatPrice(property.price)}
+
               </p>
 
-              <div className="mt-2 flex items-center gap-2 text-gray-500">
+              <div className="mt-3 flex items-center gap-2 text-gray-500">
+
                 <MapPin className="h-4 w-4" />
+
                 {property.location}
+
               </div>
+
             </div>
 
-            {/* Description */}
-            <Card className="rounded-2xl shadow-md border bg-white">
-              <CardContent className="p-6">
-                <h2 className="mb-3 text-lg font-semibold text-gray-900">
-                  Description
-                </h2>
-                <p className="leading-relaxed text-gray-600">
-                  {property.description || "No description provided."}
-                </p>
-              </CardContent>
-            </Card>
+            {/* AMENITIES */}
+            {property.amenities &&
+              property.amenities.trim() !== "" && (
 
-            {/* Date */}
-            <div className="mt-4 flex items-center gap-2 text-sm text-gray-500">
-              <Calendar className="h-4 w-4" />
-              Listed on {formatDate(property.created_at)}
-            </div>
-          </div>
+              <Card className="mt-8 overflow-hidden rounded-3xl border-0 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
 
-          {/* RIGHT */}
-          <div>
-            <Card className="sticky top-24 rounded-2xl shadow-lg border bg-white">
-              <CardContent className="p-6">
+                {/* HEADER */}
+                <div className="border-b bg-gradient-to-r from-primary/5 via-white to-primary/5 px-6 py-5">
 
-                <h2 className="mb-4 text-lg font-semibold text-gray-900">
-                  Contact Owner
-                </h2>
+                  <div className="flex items-center justify-between">
 
-                <p className="mb-6 text-sm text-gray-500">
-                  Interested? Call directly now.
-                </p>
+                    <div>
 
-                <a
-                  href={`tel:${property.phone}`}
-                  className="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 text-lg font-semibold text-white shadow hover:bg-primary/90 transition"
-                >
-                  <Phone className="h-5 w-5" />
-                  {property.phone}
-                </a>
+                      <h2 className="text-xl font-bold text-gray-900">
 
-                <div className="mt-6 border-t pt-6 space-y-3 text-sm">
+                        Property Amenities
 
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Type</span>
-                    <span className="font-medium text-gray-900">
-                      {property.type}
-                    </span>
-                  </div>
+                      </h2>
 
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Price</span>
-                    <span className="font-medium text-gray-900">
-                      {formatPrice(property.price)}
-                    </span>
-                  </div>
+                      <p className="mt-1 text-sm text-gray-500">
 
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Location</span>
-                    <span className="font-medium text-gray-900">
-                      {property.location}
-                    </span>
+                        Premium facilities and lifestyle features
+
+                      </p>
+
+                    </div>
+
+                    <div className="hidden rounded-2xl bg-primary/10 px-4 py-2 text-sm font-semibold text-primary sm:block">
+
+                      {property.amenities
+                        .split(",")
+                        .filter(
+                          (item: string) =>
+                            item.trim() !== ""
+                        ).length}{" "}
+
+                      Amenities
+
+                    </div>
+
                   </div>
 
                 </div>
 
+                {/* CONTENT */}
+                <CardContent className="p-6">
+
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+                    {property.amenities
+                      .split(",")
+                      .filter(
+                        (item: string) =>
+                          item.trim() !== ""
+                      )
+                      .map(
+                        (
+                          item: string,
+                          index: number
+                        ) => (
+
+                          <div
+                            key={index}
+                            className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-br from-white to-gray-50 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl"
+                          >
+
+                            {/* GLOW */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/[0.03] to-primary/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+                            {/* CONTENT */}
+                            <div className="relative flex items-center gap-4">
+
+                              {/* ICON */}
+                              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-2xl shadow-sm">
+
+                                {amenityIcons[item.trim()] || "✨"}
+
+                              </div>
+
+                              {/* TEXT */}
+                              <div>
+
+                                <p className="text-base font-semibold text-gray-900">
+
+                                  {item.trim()}
+
+                                </p>
+
+                                <p className="mt-1 text-sm text-gray-500">
+
+                                  Available in this property
+
+                                </p>
+
+                              </div>
+
+                            </div>
+
+                          </div>
+
+                        )
+                      )}
+
+                  </div>
+
+                </CardContent>
+
+              </Card>
+
+            )}
+
+            {/* DESCRIPTION */}
+            <Card className="mt-8 rounded-2xl border bg-white shadow-md">
+
+              <CardContent className="p-5">
+
+                <h2 className="mb-3 text-lg font-semibold text-gray-900">
+
+                  Description
+
+                </h2>
+
+                <p className="leading-relaxed text-gray-600">
+
+                  {property.description ||
+                    "No description provided."}
+
+                </p>
+
               </CardContent>
+
             </Card>
+
           </div>
+
+          {/* RIGHT */}
+          <div>
+
+            <Card className="sticky top-24 rounded-2xl border bg-white shadow-lg">
+
+              <CardContent className="p-6">
+
+                <h2 className="mb-4 text-lg font-semibold text-gray-900">
+
+                  Contact Owner
+
+                </h2>
+
+                <p className="mb-6 text-sm text-gray-500">
+
+                  Interested? Contact directly now.
+
+                </p>
+
+                <div className="grid gap-3">
+
+                  {/* CALL */}
+                  <a
+                    href={`tel:${property.phone}`}
+                    className="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 text-lg font-semibold text-white shadow transition hover:bg-primary/90"
+                  >
+
+                    <Phone className="h-5 w-5" />
+
+                    Call Now
+
+                  </a>
+
+                  {/* WHATSAPP */}
+                  <a
+                    href={`https://wa.me/91${property.phone}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 rounded-xl bg-green-600 px-6 py-4 text-lg font-semibold text-white shadow transition hover:bg-green-700"
+                  >
+
+                  <FaWhatsapp className="h-6 w-6" />
+                  WhatsApp
+
+                  </a>
+
+                </div>
+
+                <div className="mt-6 space-y-3 border-t pt-6 text-sm">
+
+                  {/* TYPE */}
+                  <div className="flex justify-between">
+
+                    <span className="text-gray-500">
+                      Type
+                    </span>
+
+                    <span className="font-medium text-gray-900">
+                      {property.type}
+                    </span>
+
+                  </div>
+
+                  {/* PRICE */}
+                  <div className="flex justify-between">
+
+                    <span className="text-gray-500">
+                      Price
+                    </span>
+
+                    <span className="font-medium text-gray-900">
+                      {formatPrice(property.price)}
+                    </span>
+
+                  </div>
+
+                  {/* LOCATION */}
+                 <div className="flex justify-between gap-4">
+
+  <span className="text-gray-500">
+    Location
+  </span>
+
+  <div className="text-right">
+
+    <p className="font-medium">
+      {[
+        property.area,
+        property.city,
+      ]
+        .filter(Boolean)
+        .join(", ")}
+    </p>
+
+    {property.landmark && (
+
+      <p className="mt-1 text-sm text-gray-500">
+
+        Near {property.landmark}
+
+      </p>
+
+    )}
+
+  </div>
+
+</div>
+
+                </div>
+
+              </CardContent>
+
+            </Card>
+
+          </div>
+
         </div>
+
       </div>
+
     </div>
   )
 }

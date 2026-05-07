@@ -8,10 +8,12 @@ import Image from "next/image"
 interface MultiImageUploadProps {
   values: string[]
   onChange: (urls: string[]) => void
-  maxImages?: number
 }
 
-export function ImageUpload({ values, onChange, maxImages = 4 }: MultiImageUploadProps) {
+export function ImageUpload({
+  values,
+  onChange,
+}: MultiImageUploadProps) {
   const [isDragging, setIsDragging] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -27,10 +29,7 @@ export function ImageUpload({ values, onChange, maxImages = 4 }: MultiImageUploa
       return
     }
 
-    if (values.length >= maxImages) {
-      alert(`Maximum ${maxImages} images allowed`)
-      return
-    }
+    
 
     setIsUploading(true)
 
@@ -45,7 +44,7 @@ export function ImageUpload({ values, onChange, maxImages = 4 }: MultiImageUploa
       setIsUploading(false)
     }
     reader.readAsDataURL(file)
-  }, [onChange, values, maxImages])
+  }, [onChange, values])
 
   const handleDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
@@ -93,7 +92,6 @@ export function ImageUpload({ values, onChange, maxImages = 4 }: MultiImageUploa
     fileInputRef.current?.click()
   }, [])
 
-  const canAddMore = values.length < maxImages
 
   // No images yet - show compact upload box
   if (values.length === 0) {
@@ -133,7 +131,9 @@ export function ImageUpload({ values, onChange, maxImages = 4 }: MultiImageUploa
                 Click to upload or drag and drop
               </p>
               <p className="text-xs text-muted-foreground">
-                PNG, JPG, WEBP up to 5MB
+                Upload unlimited property images
+Upload unlimited property images
+PNG, JPG, WEBP up to 5MB each
               </p>
             </div>
           </>
@@ -182,7 +182,7 @@ export function ImageUpload({ values, onChange, maxImages = 4 }: MultiImageUploa
         ))}
 
         {/* Add more button (inline with images) */}
-        {canAddMore && (
+        {(
           <div
             onClick={handleClick}
             onDrop={handleDrop}
@@ -208,7 +208,7 @@ export function ImageUpload({ values, onChange, maxImages = 4 }: MultiImageUploa
 
       {/* Image count */}
       <p className="text-xs text-muted-foreground">
-        {values.length} of {maxImages} images uploaded
+        {values.length} images uploaded
       </p>
     </div>
   )
