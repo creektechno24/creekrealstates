@@ -74,31 +74,26 @@ export const metadata: Metadata = {
   generator: 'v0.app',
 
   // ✅ FAVICONS
-  icons: {
+ icons: {
 
-    icon: [
+  icon: [
 
-      {
-        url: "/favicon.ico"
-      },
+    {
+      url: "/favicon.ico",
+    },
 
-      {
-        url: "/favicon-96x96.png",
-        sizes: "96x96",
-        type: "image/png"
-      },
+    {
+      url: "/favicon-32x32.png",
+      sizes: "32x32",
+      type: "image/png",
+    },
 
-      {
-        url: "/favicon.svg",
-        type: "image/svg+xml"
-      },
+  ],
 
-    ],
+  apple:
+    "/apple-touch-icon.png",
 
-    apple:
-      "/apple-touch-icon.png",
-
-  },
+},
 
 }
 
