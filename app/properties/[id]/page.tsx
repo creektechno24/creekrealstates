@@ -398,7 +398,7 @@ export default async function PropertyDetailsPage({
 
                   {/* CALL */}
                   <a
-                    href={`tel:${property.phone}`}
+                    href={`tel:+91${property.phone}`}
                     className="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 text-lg font-semibold text-white shadow transition hover:bg-primary/90"
                   >
 
@@ -421,6 +421,84 @@ export default async function PropertyDetailsPage({
                     WhatsApp
 
                   </a>
+
+                </div>
+
+                {/* PROPERTY DETAILS */}
+                <div className="mt-6 space-y-3 border-t pt-6 text-sm">
+
+                  {/* TYPE */}
+                  <div className="flex justify-between">
+
+                    <span className="text-gray-500">
+                      Type
+                    </span>
+
+                    <span className="font-medium text-gray-900">
+                      {property.type}
+                    </span>
+
+                  </div>
+
+                  {/* PRICE */}
+                  <div className="flex justify-between">
+
+                    <span className="text-gray-500">
+                      Price
+                    </span>
+
+                    <span className="font-medium text-gray-900">
+                      {formatPrice(property.price)}
+                    </span>
+
+                  </div>
+
+                  {/* LOCATION */}
+                  <div className="flex justify-between gap-4">
+
+                    <span className="text-gray-500">
+                      Location
+                    </span>
+
+                    <div className="text-right">
+
+                      <p className="font-medium">
+
+                        {[
+                          property.area,
+                          property.city,
+                        ]
+                          .filter(Boolean)
+                          .join(", ")}
+
+                      </p>
+
+                      {property.landmark && (
+
+                        <p className="mt-1 text-sm text-gray-500">
+
+                          Near {property.landmark}
+
+                        </p>
+
+                      )}
+
+                    </div>
+
+                  </div>
+
+                  {/* PHONE */}
+                  <div className="flex justify-between">
+
+                    <span className="text-gray-500">
+                      Phone
+                    </span>
+
+                    <span className="font-medium text-gray-900">
+                      +91 {property.phone}
+                    </span>
+
+                  </div>
 
                 </div>
 
