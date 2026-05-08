@@ -1,3 +1,5 @@
+import type { Metadata } from "next"
+
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
@@ -10,8 +12,8 @@ import {
   Home,
   Building,
   LandPlot,
-  Calendar,
 } from "lucide-react"
+
 import { FaWhatsapp } from "react-icons/fa"
 
 import { Card, CardContent } from "@/components/ui/card"
@@ -81,6 +83,81 @@ async function getProperty(
 
 }
 
+/* =========================
+   DYNAMIC SEO METADATA
+========================= */
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+
+  const { id } = await params
+
+  const property =
+    await getProperty(id)
+
+  if (!property) {
+
+    return {
+      title:
+        "Property Not Found",
+    }
+
+  }
+
+  const image =
+    property.images?.[0] ||
+    property.image_url ||
+    "/og-image.jpg"
+
+  return {
+
+    title:
+      property.title,
+
+    description:
+      property.description ||
+      `${property.type} available in ${property.location}`,
+
+    openGraph: {
+
+      title:
+        property.title,
+
+      description:
+        property.description ||
+        `${property.type} available in ${property.location}`,
+
+      images: [
+        {
+          url: image,
+        },
+      ],
+
+    },
+
+    twitter: {
+
+      card:
+        "summary_large_image",
+
+      title:
+        property.title,
+
+      description:
+        property.description ||
+        `${property.type} available in ${property.location}`,
+
+      images: [image],
+
+    },
+
+  }
+
+}
+
 export default async function PropertyDetailsPage({
   params,
 }: {
@@ -130,10 +207,10 @@ export default async function PropertyDetailsPage({
 
               <div className="overflow-hidden rounded-2xl shadow-sm">
 
-               <PropertyImagePreview
-  images={images}
-  videoUrls={property.video_urls || []}
-/>
+                <PropertyImagePreview
+                  images={images}
+                  videoUrls={property.video_urls || []}
+                />
 
               </div>
 
@@ -160,7 +237,6 @@ export default async function PropertyDetailsPage({
 
                 </div>
 
-              
                 <div className="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700">
 
                   📅 {formatDate(property.created_at)}
@@ -197,7 +273,6 @@ export default async function PropertyDetailsPage({
 
               <Card className="mt-8 overflow-hidden rounded-3xl border-0 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
 
-                {/* HEADER */}
                 <div className="border-b bg-gradient-to-r from-primary/5 via-white to-primary/5 px-6 py-5">
 
                   <div className="flex items-center justify-between">
@@ -218,24 +293,10 @@ export default async function PropertyDetailsPage({
 
                     </div>
 
-                    <div className="hidden rounded-2xl bg-primary/10 px-4 py-2 text-sm font-semibold text-primary sm:block">
-
-                      {property.amenities
-                        .split(",")
-                        .filter(
-                          (item: string) =>
-                            item.trim() !== ""
-                        ).length}{" "}
-
-                      Amenities
-
-                    </div>
-
                   </div>
 
                 </div>
 
-                {/* CONTENT */}
                 <CardContent className="p-6">
 
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -257,31 +318,19 @@ export default async function PropertyDetailsPage({
                             className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-br from-white to-gray-50 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl"
                           >
 
-                            {/* GLOW */}
-                            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/[0.03] to-primary/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                            {/* CONTENT */}
                             <div className="relative flex items-center gap-4">
 
-                              {/* ICON */}
                               <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-2xl shadow-sm">
 
                                 {amenityIcons[item.trim()] || "✨"}
 
                               </div>
 
-                              {/* TEXT */}
                               <div>
 
                                 <p className="text-base font-semibold text-gray-900">
 
                                   {item.trim()}
-
-                                </p>
-
-                                <p className="mt-1 text-sm text-gray-500">
-
-                                  Available in this property
 
                                 </p>
 
@@ -367,72 +416,11 @@ export default async function PropertyDetailsPage({
                     className="flex items-center justify-center gap-2 rounded-xl bg-green-600 px-6 py-4 text-lg font-semibold text-white shadow transition hover:bg-green-700"
                   >
 
-                  <FaWhatsapp className="h-6 w-6" />
-                  WhatsApp
+                    <FaWhatsapp className="h-6 w-6" />
+
+                    WhatsApp
 
                   </a>
-
-                </div>
-
-                <div className="mt-6 space-y-3 border-t pt-6 text-sm">
-
-                  {/* TYPE */}
-                  <div className="flex justify-between">
-
-                    <span className="text-gray-500">
-                      Type
-                    </span>
-
-                    <span className="font-medium text-gray-900">
-                      {property.type}
-                    </span>
-
-                  </div>
-
-                  {/* PRICE */}
-                  <div className="flex justify-between">
-
-                    <span className="text-gray-500">
-                      Price
-                    </span>
-
-                    <span className="font-medium text-gray-900">
-                      {formatPrice(property.price)}
-                    </span>
-
-                  </div>
-
-                  {/* LOCATION */}
-                 <div className="flex justify-between gap-4">
-
-  <span className="text-gray-500">
-    Location
-  </span>
-
-  <div className="text-right">
-
-    <p className="font-medium">
-      {[
-        property.area,
-        property.city,
-      ]
-        .filter(Boolean)
-        .join(", ")}
-    </p>
-
-    {property.landmark && (
-
-      <p className="mt-1 text-sm text-gray-500">
-
-        Near {property.landmark}
-
-      </p>
-
-    )}
-
-  </div>
-
-</div>
 
                 </div>
 

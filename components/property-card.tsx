@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge"
 import { createClient } from "@/lib/supabase/client"
 import { useToast } from "@/hooks/use-toast"
 
+
 import {
   Dialog,
   DialogContent,
@@ -138,7 +139,7 @@ export function PropertyCard({
         </div>
       )}
 
-      <Link href={`/properties/${property.id}`}>
+      <Link    href={`/properties/${property.id}`}>
         <Card className="group h-full overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
 
           {/* IMAGE */}
