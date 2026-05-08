@@ -79,7 +79,9 @@ export const metadata: Metadata = {
   icon: [
 
     {
-      url: "/favicon.ico",
+      url: "/favicon-16x16.png",
+      sizes: "16x16",
+      type: "image/png",
     },
 
     {
@@ -90,8 +92,7 @@ export const metadata: Metadata = {
 
   ],
 
-  apple:
-    "/apple-touch-icon.png",
+  apple: "/apple-touch-icon.png",
 
 },
 
