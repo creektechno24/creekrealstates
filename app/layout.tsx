@@ -1,25 +1,43 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
+import {
+  Geist,
+  Geist_Mono,
+} from 'next/font/google'
+
+import { Analytics }
+from '@vercel/analytics/next'
+
+import { Header }
+from '@/components/header'
+
+import { Footer }
+from '@/components/footer'
 
 import './globals.css'
 
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster }
+from "@/components/ui/toaster"
 
-const _geist = Geist({
-  subsets: ["latin"]
+const geist = Geist({
+
+  subsets: ["latin"],
+
+  display: "swap",
+
 })
 
-const _geistMono = Geist_Mono({
-  subsets: ["latin"]
+const geistMono = Geist_Mono({
+
+  subsets: ["latin"],
+
+  display: "swap",
+
 })
 
 export const metadata: Metadata = {
 
-  // ✅ GLOBAL SEO TITLE
+  // GLOBAL SEO TITLE
   title: {
 
     default:
@@ -30,11 +48,11 @@ export const metadata: Metadata = {
 
   },
 
-  // ✅ SEO DESCRIPTION
+  // SEO DESCRIPTION
   description:
     'Browse flats, apartments, villas, houses, lands, and properties for sale with Creek Real Estates.',
 
-  // ✅ SEO KEYWORDS
+  // SEO KEYWORDS
   keywords: [
     'real estate',
     'property',
@@ -46,14 +64,14 @@ export const metadata: Metadata = {
     'properties for sale',
   ],
 
-  // ✅ AUTHOR
+  // AUTHOR
   authors: [
     {
       name: 'Creek Real Estates',
     },
   ],
 
-  // ✅ OPEN GRAPH
+  // OPEN GRAPH
   openGraph: {
 
     title:
@@ -70,31 +88,32 @@ export const metadata: Metadata = {
 
   },
 
-  // ✅ EXISTING
+  // EXISTING
   generator: 'v0.app',
 
-  // ✅ FAVICONS
- icons: {
+  // FAVICONS
+  icons: {
 
-  icon: [
+    icon: [
 
-    {
-      url: "/favicon-16x16.png",
-      sizes: "16x16",
-      type: "image/png",
-    },
+      {
+        url: "/favicon-16x16.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
 
-    {
-      url: "/favicon-32x32.png",
-      sizes: "32x32",
-      type: "image/png",
-    },
+      {
+        url: "/favicon-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
 
-  ],
+    ],
 
-  apple: "/apple-touch-icon.png",
+    apple:
+      "/apple-touch-icon.png",
 
-},
+  },
 
 }
 
@@ -108,10 +127,11 @@ export default function RootLayout({
 
     <html
       lang="en"
-      className="bg-background"
+      suppressHydrationWarning
+      className="scroll-smooth"
     >
 
-      <body className="font-sans antialiased">
+      <body className="bg-background font-sans antialiased">
 
         <div className="flex min-h-screen flex-col">
 
@@ -141,4 +161,5 @@ export default function RootLayout({
     </html>
 
   )
+
 }
