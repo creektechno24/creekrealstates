@@ -31,7 +31,7 @@ export function Footer() {
             >
 
               <Image
-                src="/images/logo.jpg"
+               src="/favicon-32x32.png"
                 alt="Creek Real Estates Logo"
                 width={40}
                 height={40}

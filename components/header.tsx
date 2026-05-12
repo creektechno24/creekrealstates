@@ -46,7 +46,7 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/images/logo.jpg"
+            src="/favicon-32x32.png"
             alt="Creek Real Estates"
             width={40}
             height={40}
