@@ -15,10 +15,10 @@ async function getLatestProperties(): Promise<Property[]> {
     .order("created_at", { ascending: false })
     .limit(6)
 
-  if (error) {
-    console.error("Error fetching properties:", error)
-    return []
-  }
+ if (error) {
+  console.log("FULL ERROR =>", error)
+  return []
+}
 
   return data as Property[]
 }
