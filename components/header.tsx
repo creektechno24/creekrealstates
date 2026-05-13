@@ -54,35 +54,60 @@ export function Header() {
           />
           <span className="text-xl font-bold">Creek Real Estates</span>
         </Link>
+{/* Nav */}
+<nav className="hidden md:flex gap-2">
 
-        {/* Nav */}
-        <nav className="hidden md:flex gap-2">
-          <Link
-            href="/"
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-lg text-sm",
-              pathname === "/"
-                ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:bg-muted"
-            )}
-          >
-            <Home className="h-4 w-4" />
-            Home
-          </Link>
+  <Link
+    href="/"
+    className={cn(
+      "flex items-center gap-2 rounded-lg px-4 py-2 text-sm",
+      pathname === "/"
+        ? "bg-primary/10 text-primary"
+        : "text-muted-foreground hover:bg-muted"
+    )}
+  >
+    <Home className="h-4 w-4" />
+    Home
+  </Link>
 
-          <Link
-            href="/properties"
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-lg text-sm",
-              pathname === "/properties"
-                ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:bg-muted"
-            )}
-          >
-            <Building2 className="h-4 w-4" />
-            Properties
-          </Link>
-        </nav>
+  <Link
+    href="/properties"
+    className={cn(
+      "flex items-center gap-2 rounded-lg px-4 py-2 text-sm",
+      pathname === "/properties"
+        ? "bg-primary/10 text-primary"
+        : "text-muted-foreground hover:bg-muted"
+    )}
+  >
+    <Building2 className="h-4 w-4" />
+    Properties
+  </Link>
+
+  <Link
+    href="/about"
+    className={cn(
+      "flex items-center gap-2 rounded-lg px-4 py-2 text-sm",
+      pathname === "/about"
+        ? "bg-primary/10 text-primary"
+        : "text-muted-foreground hover:bg-muted"
+    )}
+  >
+    About
+  </Link>
+
+  <Link
+    href="/contact"
+    className={cn(
+      "flex items-center gap-2 rounded-lg px-4 py-2 text-sm",
+      pathname === "/contact"
+        ? "bg-primary/10 text-primary"
+        : "text-muted-foreground hover:bg-muted"
+    )}
+  >
+    Contact
+  </Link>
+
+</nav>
 
         {/* Right Side */}
         <div className="flex items-center gap-3">
