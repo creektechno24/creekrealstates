@@ -13,32 +13,77 @@ interface SearchParams {
   type?: string
 }
 
-// 🔥 FETCH PROPERTIES
-async function getProperties(searchParams: SearchParams): Promise<Property[]> {
-  const supabase = await createClient()
+async function getProperties(
+  searchParams: SearchParams
+): Promise<Property[]> {
 
-  let query = supabase.from("properties").select("*")
+  const supabase =
+    await createClient()
 
+  let query =
+    supabase
+      .from("properties")
+      .select("*")
+
+  // 🔍 SEARCH
   if (searchParams.search) {
-    query = query.ilike("location", `%${searchParams.search}%`)
+
+    const search =
+      searchParams.search.trim()
+
+    const filters = [
+      `title.ilike.%${search}%`,
+      `city.ilike.%${search}%`,
+      `area.ilike.%${search}%`,
+      `landmark.ilike.%${search}%`,
+      `description.ilike.%${search}%`,
+      `location.ilike.%${search}%`,
+      `type.ilike.%${search}%`,
+      `amenities.ilike.%${search}%`,
+    ].join(",")
+
+    query = query.or(filters)
+
   }
 
-  if (searchParams.type && searchParams.type !== "all") {
-    query = query.eq("type", searchParams.type)
+  // 🏷 TYPE FILTER
+  if (
+    searchParams.type &&
+    searchParams.type !== "all"
+  ) {
+
+    query = query.eq(
+      "type",
+      searchParams.type
+    )
+
   }
 
-  query = query.order("created_at", { ascending: false })
+  // 📅 ORDER
+  query = query.order(
+    "created_at",
+    { ascending: false }
+  )
 
-  const { data, error } = await query
+  const {
+    data,
+    error,
+  } = await query
 
   if (error) {
-    console.error("Error fetching properties:", error)
+
+    console.error(
+      "Error fetching properties:",
+      error
+    )
+
     return []
+
   }
 
   return data as Property[]
-}
 
+}
 // 🔥 CONTENT
 async function PropertiesContent({
   searchParams,
@@ -47,33 +92,59 @@ async function PropertiesContent({
   searchParams: SearchParams
   isAdmin: boolean
 }) {
-  const properties = await getProperties(searchParams)
 
+  const properties =
+    await getProperties(searchParams)
+
+  // ❌ EMPTY STATE
   if (properties.length === 0) {
+
     return (
+
       <div className="rounded-2xl border border-dashed border-gray-300 bg-gray-100 p-12 text-center">
+
         <p className="text-lg font-medium text-gray-600">
+
           No properties found
-          {searchParams.search ? ` in "${searchParams.search}"` : ""}.
+          {searchParams.search
+            ? ` for "${searchParams.search}"`
+            : ""}
+
         </p>
+
         <p className="mt-2 text-sm text-gray-500">
-          Try adjusting your search or filters.
+
+          Try searching with title,
+          city, area, amenities,
+          or property type.
+
         </p>
+
       </div>
+
     )
+
   }
 
+  // ✅ PROPERTIES GRID
   return (
+
     <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+
       {properties.map((property) => (
+
         <PropertyCard
           key={property.id}
           property={property}
-          isAdmin={isAdmin} // ✅ IMPORTANT FIX
+          isAdmin={isAdmin}
         />
+
       ))}
+
     </div>
+
   )
+
 }
 
 // 🔥 MAIN PAGE
@@ -82,53 +153,80 @@ export default async function PropertiesPage({
 }: {
   searchParams: Promise<SearchParams>
 }) {
-  const params = await searchParams
 
-  const supabase = await createClient()
+  const params =
+    await searchParams
+
+  const supabase =
+    await createClient()
 
   // 🔐 GET USER
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } =
+    await supabase.auth.getUser()
 
-  // 🔥 ADMIN CHECK
-  const isAdmin = user?.email === "creektechno24@gmail.com"
+  // 👑 ADMIN CHECK
+  const isAdmin =
+    user?.email ===
+    "creektechno24@gmail.com"
 
   return (
+
     <div className="min-h-screen bg-gray-50">
+
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
 
-        {/* Heading */}
+        {/* HEADING */}
         <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">
+
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+
             All Properties
+
           </h1>
 
-          <p className="mt-2 text-gray-500 max-w-xl">
-            Explore our curated collection of houses, flats, and land listings across prime locations.
+          <p className="mt-2 max-w-xl text-gray-500">
+
+            Explore our curated collection
+            of houses, flats, and land
+            listings across prime locations.
+
           </p>
+
         </div>
 
-        {/* Filters */}
+        {/* FILTERS */}
         <div className="mb-10">
+
           <PropertyFilters />
+
         </div>
 
-        {/* Content */}
+        {/* CONTENT */}
         <Suspense
           fallback={
+
             <div className="flex items-center justify-center py-24">
+
               <Spinner className="h-8 w-8" />
+
             </div>
+
           }
         >
+
           <PropertiesContent
             searchParams={params}
-            isAdmin={isAdmin} // ✅ PASS HERE
+            isAdmin={isAdmin}
           />
+
         </Suspense>
 
       </div>
+
     </div>
+
   )
+
 }
