@@ -1,12 +1,24 @@
 import { Suspense } from "react"
 
-import { PropertyCard } from "@/components/property-card"
-import { PropertyFilters } from "@/components/property-filters"
-import { createClient } from "@/lib/supabase/server"
-import type { Property } from "@/lib/types"
-import { Spinner } from "@/components/ui/spinner"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+
+import { Button }
+from "@/components/ui/button"
+
+import { PropertyCard }
+from "@/components/property-card"
+
+import { PropertyFilters }
+from "@/components/property-filters"
+
+import { Spinner }
+from "@/components/ui/spinner"
+
+import { createClient }
+from "@/lib/supabase/server"
+
+import type { Property }
+from "@/lib/types"
 
 //export const dynamic = "force-dynamic"
 
@@ -15,6 +27,7 @@ interface SearchParams {
   type?: string
 }
 
+// 🔥 FETCH PROPERTIES
 async function getProperties(
   searchParams: SearchParams
 ): Promise<Property[]> {
@@ -103,6 +116,7 @@ async function getProperties(
   return data as Property[]
 
 }
+
 // 🔥 CONTENT
 async function PropertiesContent({
   searchParams,
@@ -120,7 +134,7 @@ async function PropertiesContent({
 
     return (
 
-      <div className="rounded-2xl border border-dashed border-gray-300 bg-gray-100 p-12 text-center">
+      <div className="rounded-2xl border border-dashed border-gray-300 bg-gray-100 p-8 text-center sm:p-12">
 
         <p className="text-lg font-medium text-gray-600">
 
@@ -148,7 +162,7 @@ async function PropertiesContent({
   // ✅ PROPERTIES GRID
   return (
 
-    <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
 
       {properties.map((property) => (
 
@@ -192,109 +206,124 @@ export default async function PropertiesPage({
 
   return (
 
-<div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100">
-    <div className="w-full">
-{/* HERO SECTION */}
-<section className="relative flex min-h-[72vh] w-full items-center justify-center overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100">
 
-  {/* BACKGROUND IMAGE */}
-  <div
-    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
- style={{
-  backgroundImage:
-    "url('https://images.unsplash.com/photo-1460317442991-0ec209397118?q=80&w=1600&auto=format&fit=crop')",
-}}
-  />
+      <div className="w-full">
 
-  {/* DARK OVERLAY */}
-  <div className="absolute inset-0 bg-black/55" />
+        {/* HERO SECTION */}
+        <section className="relative flex min-h-[55vh] w-full items-center justify-center overflow-hidden md:min-h-[72vh]">
 
-  {/* CONTENT */}
-  <div className="relative z-10 mx-auto max-w-7xl px-4 py-24 text-center text-white">
+          {/* BACKGROUND IMAGE */}
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage:
+                "url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1600&auto=format&fit=crop')",
+            }}
+          />
 
-    <p className="text-sm font-semibold uppercase tracking-[0.35em] text-emerald-400">
+          {/* DARK OVERLAY */}
+          <div className="absolute inset-0 bg-black/55" />
 
-      Creek Real Estates
+          {/* CONTENT */}
+          <div className="relative z-10 flex w-full items-center justify-center px-4 py-16 text-center text-white md:py-24">
 
-    </p>
+            <div>
 
-    <h5 className="mt-6 text-4xl font-bold leading-tight sm:text-5xl lg:text-7xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-emerald-400">
 
-      Discover Premium
-      
-      Properties
+                Creek Real Estates
 
-    </h5>
+              </p>
 
-    <p className="mx-auto mt-8 max-w-3xl text-lg leading-9 text-white/90 sm:text-xl">
+              <h1 className="mt-6 text-3xl font-bold leading-tight sm:text-5xl lg:text-7xl">
 
-      Explore our curated collection
-      of houses, flats, and land listings
-      across prime locations.
+                Discover Premium
+                <br />
+                Properties
 
-    </p>
+              </h1>
 
-    {/* BUTTONS */}
-    <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+              <p className="mx-auto mt-8 max-w-3xl text-base leading-8 text-white/90 sm:text-xl sm:leading-9">
 
-      <Link href="/about">
+                Explore our curated collection
+                of houses, flats, and land listings
+                across prime locations.
 
-        <Button
-          size="lg"
-          className="gap-2 px-8 shadow-xl"
-        >
+              </p>
 
-          About Us
+              {/* BUTTONS */}
+              <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
 
-        </Button>
+                <Link href="/about">
 
-      </Link>
+                  <Button
+                    size="lg"
+                    className="w-full gap-2 px-8 shadow-xl sm:w-auto"
+                  >
 
-      <Link href="/contact">
+                    About Us
 
-        <Button
-          size="lg"
-          variant="outline"
-          className="gap-2 border-white bg-white/10 px-8 text-white backdrop-blur hover:bg-white hover:text-black"
-        >
+                  </Button>
 
-          Contact Us
+                </Link>
 
-        </Button>
+                <Link href="/contact">
 
-      </Link>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full gap-2 border-white bg-white/10 px-8 text-white backdrop-blur hover:bg-white hover:text-black sm:w-auto"
+                  >
 
-    </div>
+                    Contact Us
 
-  </div>
+                  </Button>
 
-</section>
+                </Link>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
         {/* FILTERS */}
-        <div className="mb-10 rounded-[32px] border border-slate-200 bg-white/80 p-6 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
+        <div className="mb-10 border-b border-slate-100 bg-white/80 p-4 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] sm:p-6">
 
-          <PropertyFilters />
+          <div className="mx-auto max-w-7xl">
+
+            <PropertyFilters />
+
+          </div>
 
         </div>
 
         {/* CONTENT */}
-        <Suspense
-          fallback={
+        <div className="mx-auto max-w-7xl px-4 pb-14 sm:px-6 md:pb-20 lg:px-8">
 
-            <div className="flex items-center justify-center py-24">
+          <Suspense
+            fallback={
 
-              <Spinner className="h-8 w-8" />
+              <div className="flex items-center justify-center py-16 md:py-24">
 
-            </div>
+                <Spinner className="h-8 w-8" />
 
-          }
-        >
+              </div>
 
-          <PropertiesContent
-            searchParams={params}
-            isAdmin={isAdmin}
-          />
+            }
+          >
 
-        </Suspense>
+            <PropertiesContent
+              searchParams={params}
+              isAdmin={isAdmin}
+            />
+
+          </Suspense>
+
+        </div>
 
       </div>
 

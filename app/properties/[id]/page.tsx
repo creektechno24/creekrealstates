@@ -1,9 +1,11 @@
 import type { Metadata } from "next"
 
 import Link from "next/link"
+
 import { notFound } from "next/navigation"
 
-import { PropertyImagePreview } from "@/components/property-image-preview"
+import { PropertyImagePreview }
+from "@/components/property-image-preview"
 
 import {
   ArrowLeft,
@@ -14,12 +16,19 @@ import {
   LandPlot,
 } from "lucide-react"
 
-import { FaWhatsapp } from "react-icons/fa"
+import { FaWhatsapp }
+from "react-icons/fa"
 
-import { Card, CardContent } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+} from "@/components/ui/card"
 
-import { createClient } from "@/lib/supabase/server"
-import type { Property } from "@/lib/types"
+import { createClient }
+from "@/lib/supabase/server"
+
+import type { Property }
+from "@/lib/types"
 
 const typeIcons = {
   House: Home,
@@ -27,7 +36,8 @@ const typeIcons = {
   Flat: Building,
 }
 
-const amenityIcons: Record<string, string> = {
+const amenityIcons:
+Record<string, string> = {
   Parking: "🚗",
   Lift: "🛗",
   Gym: "🏋️",
@@ -40,23 +50,39 @@ const amenityIcons: Record<string, string> = {
   CCTV: "📹",
 }
 
-function formatPrice(price: number): string {
+function formatPrice(
+  price: number
+): string {
 
   if (price >= 10000000) {
-    return `₹${(price / 10000000).toFixed(2)} Cr`
+
+    return `₹${(
+      price / 10000000
+    ).toFixed(2)} Cr`
+
   }
 
   if (price >= 100000) {
-    return `₹${(price / 100000).toFixed(2)} L`
+
+    return `₹${(
+      price / 100000
+    ).toFixed(2)} L`
+
   }
 
-  return `₹${price.toLocaleString("en-IN")}`
+  return `₹${price.toLocaleString(
+    "en-IN"
+  )}`
 
 }
 
-function formatDate(dateString: string): string {
+function formatDate(
+  dateString: string
+): string {
 
-  return new Date(dateString).toLocaleDateString(
+  return new Date(
+    dateString
+  ).toLocaleDateString(
     "en-IN",
     {
       year: "numeric",
@@ -71,13 +97,15 @@ async function getProperty(
   id: string
 ): Promise<Property | null> {
 
-  const supabase = await createClient()
+  const supabase =
+    await createClient()
 
-  const { data } = await supabase
-    .from("properties")
-    .select("*")
-    .eq("id", id)
-    .single()
+  const { data } =
+    await supabase
+      .from("properties")
+      .select("*")
+      .eq("id", id)
+      .single()
 
   return data as Property
 
@@ -93,7 +121,8 @@ export async function generateMetadata({
   params: Promise<{ id: string }>
 }): Promise<Metadata> {
 
-  const { id } = await params
+  const { id } =
+    await params
 
   const property =
     await getProperty(id)
@@ -118,8 +147,25 @@ export async function generateMetadata({
       property.title,
 
     description:
-      property.description ||
-      `${property.type} available in ${property.location}`,
+      `${property.title} available in ${property.location}. Price: ₹${property.price}. Contact now for more details.`,
+
+    keywords: [
+  property.title,
+  property.location,
+  property.city || "",
+  property.area || "",
+  property.type,
+  "real estate",
+  "property",
+  "house for sale",
+  "flats",
+  "land",
+],
+
+    alternates: {
+      canonical:
+        `https://creekrealestates.com/properties/${property.id}`,
+    },
 
     openGraph: {
 
@@ -164,13 +210,17 @@ export default async function PropertyDetailsPage({
   params: Promise<{ id: string }>
 }) {
 
-  const { id } = await params
+  const { id } =
+    await params
 
-  const property = await getProperty(id)
+  const property =
+    await getProperty(id)
 
-  if (!property) notFound()
+  if (!property)
+    notFound()
 
-  const TypeIcon = typeIcons[property.type]
+  const TypeIcon =
+    typeIcons[property.type]
 
   const images =
     property.images &&
@@ -181,9 +231,10 @@ export default async function PropertyDetailsPage({
       : []
 
   return (
+
     <div className="min-h-screen bg-gray-50">
 
-      <div className="mx-auto max-w-7xl px-4 py-10">
+      <div className="mx-auto max-w-7xl px-4 py-6 md:py-10">
 
         {/* BACK */}
         <Link
@@ -197,7 +248,7 @@ export default async function PropertyDetailsPage({
 
         </Link>
 
-        <div className="grid gap-12 lg:grid-cols-3">
+        <div className="grid gap-8 lg:grid-cols-3 lg:gap-12">
 
           {/* LEFT */}
           <div className="lg:col-span-2">
@@ -209,7 +260,9 @@ export default async function PropertyDetailsPage({
 
                 <PropertyImagePreview
                   images={images}
-                  videoUrls={property.video_urls || []}
+                  videoUrls={
+                    property.video_urls || []
+                  }
                 />
 
               </div>
@@ -239,21 +292,25 @@ export default async function PropertyDetailsPage({
 
                 <div className="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700">
 
-                  📅 {formatDate(property.created_at)}
+                  📅 {formatDate(
+                    property.created_at
+                  )}
 
                 </div>
 
               </div>
 
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
 
                 {property.title}
 
               </h1>
 
-              <p className="mt-3 text-3xl font-bold text-green-700">
+              <p className="mt-3 text-2xl font-bold text-green-700 sm:text-3xl">
 
-                {formatPrice(property.price)}
+                {formatPrice(
+                  property.price
+                )}
 
               </p>
 
@@ -273,13 +330,13 @@ export default async function PropertyDetailsPage({
 
               <Card className="mt-8 overflow-hidden rounded-3xl border-0 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
 
-                <div className="border-b bg-gradient-to-r from-primary/5 via-white to-primary/5 px-6 py-5">
+                <div className="border-b bg-gradient-to-r from-primary/5 via-white to-primary/5 px-5 py-4 sm:px-6 sm:py-5">
 
                   <div className="flex items-center justify-between">
 
                     <div>
 
-                      <h2 className="text-xl font-bold text-gray-900">
+                      <h2 className="text-lg font-bold text-gray-900 sm:text-xl">
 
                         Property Amenities
 
@@ -297,7 +354,7 @@ export default async function PropertyDetailsPage({
 
                 </div>
 
-                <CardContent className="p-6">
+                <CardContent className="p-5 sm:p-6">
 
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
@@ -315,20 +372,22 @@ export default async function PropertyDetailsPage({
 
                           <div
                             key={index}
-                            className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-br from-white to-gray-50 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl"
+                            className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-br from-white to-gray-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl sm:p-5"
                           >
 
                             <div className="relative flex items-center gap-4">
 
-                              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-2xl shadow-sm">
+                              <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-xl shadow-sm sm:h-12 sm:w-12 sm:text-2xl">
 
-                                {amenityIcons[item.trim()] || "✨"}
+                                {amenityIcons[
+                                  item.trim()
+                                ] || "✨"}
 
                               </div>
 
                               <div>
 
-                                <p className="text-base font-semibold text-gray-900">
+                                <p className="text-sm font-semibold text-gray-900 sm:text-base">
 
                                   {item.trim()}
 
@@ -362,7 +421,7 @@ export default async function PropertyDetailsPage({
 
                 </h2>
 
-                <p className="leading-relaxed text-gray-600">
+                <p className="leading-8 text-gray-600">
 
                   {property.description ||
                     "No description provided."}
@@ -378,9 +437,9 @@ export default async function PropertyDetailsPage({
           {/* RIGHT */}
           <div>
 
-            <Card className="sticky top-24 rounded-2xl border bg-white shadow-lg">
+            <Card className="rounded-2xl border bg-white shadow-lg lg:sticky lg:top-24">
 
-              <CardContent className="p-6">
+              <CardContent className="p-5 sm:p-6">
 
                 <h2 className="mb-4 text-lg font-semibold text-gray-900">
 
@@ -399,7 +458,7 @@ export default async function PropertyDetailsPage({
                   {/* CALL */}
                   <a
                     href={`tel:+91${property.phone}`}
-                    className="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 text-lg font-semibold text-white shadow transition hover:bg-primary/90"
+                    className="flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-base font-semibold text-white shadow transition hover:bg-primary/90 sm:px-6 sm:py-4 sm:text-lg"
                   >
 
                     <Phone className="h-5 w-5" />
@@ -413,7 +472,7 @@ export default async function PropertyDetailsPage({
                     href={`https://wa.me/91${property.phone}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 rounded-xl bg-green-600 px-6 py-4 text-lg font-semibold text-white shadow transition hover:bg-green-700"
+                    className="flex items-center justify-center gap-2 rounded-xl bg-green-600 px-5 py-3 text-base font-semibold text-white shadow transition hover:bg-green-700 sm:px-6 sm:py-4 sm:text-lg"
                   >
 
                     <FaWhatsapp className="h-6 w-6" />
@@ -431,11 +490,15 @@ export default async function PropertyDetailsPage({
                   <div className="flex justify-between">
 
                     <span className="text-gray-500">
+
                       Type
+
                     </span>
 
                     <span className="font-medium text-gray-900">
+
                       {property.type}
+
                     </span>
 
                   </div>
@@ -444,11 +507,17 @@ export default async function PropertyDetailsPage({
                   <div className="flex justify-between">
 
                     <span className="text-gray-500">
+
                       Price
+
                     </span>
 
                     <span className="font-medium text-gray-900">
-                      {formatPrice(property.price)}
+
+                      {formatPrice(
+                        property.price
+                      )}
+
                     </span>
 
                   </div>
@@ -457,7 +526,9 @@ export default async function PropertyDetailsPage({
                   <div className="flex justify-between gap-4">
 
                     <span className="text-gray-500">
+
                       Location
+
                     </span>
 
                     <div className="text-right">
@@ -491,11 +562,15 @@ export default async function PropertyDetailsPage({
                   <div className="flex justify-between">
 
                     <span className="text-gray-500">
+
                       Phone
+
                     </span>
 
                     <span className="font-medium text-gray-900">
+
                       +91 {property.phone}
+
                     </span>
 
                   </div>
@@ -513,5 +588,7 @@ export default async function PropertyDetailsPage({
       </div>
 
     </div>
+
   )
+
 }

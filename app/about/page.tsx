@@ -144,7 +144,7 @@ export default function AboutPage() {
       </section>
 
       {/* CONTENT */}
-      <section className="mx-auto max-w-7xl space-y-10 px-4 py-20 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl space-y-10 px-4 py-14 md:py-20 sm:px-6 lg:px-8">
 
         {/* INVESTORS */}
         <div className="rounded-[36px] border border-white/10 bg-white p-10 shadow-[0_20px_80px_rgba(0,0,0,0.08)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_120px_rgba(0,0,0,0.12)]">

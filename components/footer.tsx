@@ -1,6 +1,12 @@
 import Link from "next/link"
+
 import Image from "next/image"
-import { Phone, Mail, MapPin } from "lucide-react"
+
+import {
+  Phone,
+  Mail,
+  MapPin,
+} from "lucide-react"
 
 export function Footer() {
 
@@ -8,21 +14,21 @@ export function Footer() {
     new Date().getFullYear()
 
   const linkStyle =
-    "text-sm text-gray-300 px-1 rounded transition-all duration-200 hover:text-white hover:bg-white/10 hover:underline underline-offset-4"
+    "text-xs sm:text-sm text-gray-300 px-1 rounded transition-all duration-200 hover:text-white hover:bg-white/10 hover:underline underline-offset-4"
 
   return (
 
     <footer className="relative overflow-hidden">
 
-      {/* Gradient Background */}
+      {/* BACKGROUND */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
 
-      {/* Content */}
-      <div className="relative mx-auto max-w-7xl px-4 py-12 text-white sm:px-6 lg:px-8">
+      {/* CONTENT */}
+      <div className="relative mx-auto max-w-7xl px-4 py-12 text-white sm:px-6 md:py-20 lg:px-8">
 
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
 
-          {/* Brand */}
+          {/* BRAND */}
           <div className="sm:col-span-2 lg:col-span-1">
 
             <Link
@@ -31,14 +37,14 @@ export function Footer() {
             >
 
               <Image
-               src="/favicon-32x32.png"
+                src="/favicon-32x32.png"
                 alt="Creek Real Estates Logo"
                 width={40}
                 height={40}
                 className="h-10 w-10 rounded-lg object-cover"
               />
 
-              <span className="text-lg font-bold tracking-tight">
+              <span className="text-xl font-bold tracking-tight sm:text-2xl">
 
                 Creek Real Estates
 
@@ -46,7 +52,7 @@ export function Footer() {
 
             </Link>
 
-            <p className="mt-4 text-sm leading-relaxed text-gray-300">
+            <p className="mt-4 text-sm leading-7 text-gray-300 sm:leading-relaxed">
 
               Your trusted partner for finding the perfect property.
               Browse houses, flats, and land listings or post your
@@ -56,137 +62,171 @@ export function Footer() {
 
           </div>
 
-          {/* Quick Links */}
+          {/* QUICK LINKS */}
           <div>
 
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">
+            <h3 className="mb-4 text-lg font-semibold uppercase tracking-wider text-gray-400 sm:text-xl">
 
               Quick Links
 
             </h3>
 
-            <ul className="space-y-3">
+            <ul className="space-y-3 sm:space-y-4">
 
               <li>
+
                 <Link
                   href="/"
                   className={linkStyle}
                 >
+
                   Home
+
                 </Link>
+
               </li>
 
               <li>
+
                 <Link
                   href="/properties"
                   className={linkStyle}
                 >
+
                   Browse Properties
+
                 </Link>
+
               </li>
 
               <li>
+
                 <Link
                   href="/post-property"
                   className={linkStyle}
                 >
+
                   Post Property
+
                 </Link>
+
               </li>
 
             </ul>
 
           </div>
 
-          {/* Property Types */}
+          {/* PROPERTY TYPES */}
           <div>
 
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">
+            <h3 className="mb-4 text-lg font-semibold uppercase tracking-wider text-gray-400 sm:text-xl">
 
               Property Types
 
             </h3>
 
-            <ul className="space-y-3">
+            <ul className="space-y-3 sm:space-y-4">
 
               <li>
+
                 <Link
                   href="/properties?type=House"
                   className={linkStyle}
                 >
+
                   Houses
+
                 </Link>
+
               </li>
 
               <li>
+
                 <Link
                   href="/properties?type=Flat"
                   className={linkStyle}
                 >
+
                   Flats
+
                 </Link>
+
               </li>
 
               <li>
+
                 <Link
                   href="/properties?type=Land"
                   className={linkStyle}
                 >
+
                   Land
+
                 </Link>
+
               </li>
 
             </ul>
 
           </div>
 
-          {/* Contact Info */}
+          {/* CONTACT INFO */}
           <div>
 
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">
+            <h3 className="mb-4 text-lg font-semibold uppercase tracking-wider text-gray-400 sm:text-xl">
 
               Contact Us
 
             </h3>
 
-            <ul className="space-y-3">
+            <ul className="space-y-3 sm:space-y-4">
 
-              <li className="flex items-center gap-2 text-sm text-gray-300">
+              <li className="flex items-center gap-3 text-xs text-gray-300 sm:text-sm">
 
                 <Phone className="h-4 w-4 text-primary" />
 
                 <span>
+
                   +91 9322393157
+
                 </span>
 
               </li>
 
-              <li className="flex items-center gap-2 text-sm text-gray-300">
+              <li className="flex items-center gap-3 text-xs text-gray-300 sm:text-sm">
 
                 <Phone className="h-4 w-4 text-primary" />
 
                 <span>
+
                   +91 9618331539
+
                 </span>
 
               </li>
 
-              <li className="flex items-center gap-2 text-sm text-gray-300">
+              <li className="flex items-center gap-3 text-xs text-gray-300 sm:text-sm">
 
                 <Mail className="h-4 w-4 text-primary" />
 
-                <span>
+                <span className="break-all">
+
                   info@creekrealestates.com
+
                 </span>
 
               </li>
 
-              <li className="flex items-start gap-2 text-sm text-gray-300">
+              <li className="flex items-start gap-3 text-xs text-gray-300 sm:text-sm">
 
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
 
                 <span>
-                  Hyderabad, Telangana, India
+
+                  Hyderabad,
+                  Telangana,
+                  India
+
                 </span>
 
               </li>
@@ -200,49 +240,67 @@ export function Footer() {
         {/* LEGAL LINKS */}
         <div className="mt-10 border-t border-white/10 pt-6">
 
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex flex-col items-center justify-center gap-3 text-center sm:flex-row sm:flex-wrap sm:gap-4">
 
             <Link
               href="/privacy-policy"
               className={linkStyle}
             >
+
               Privacy Policy
+
             </Link>
 
             <Link
               href="/terms-and-conditions"
               className={linkStyle}
             >
+
               Terms & Conditions
+
             </Link>
 
             <Link
               href="/disclaimer"
               className={linkStyle}
             >
+
               Disclaimer
+
             </Link>
 
             <Link
               href="/website-usage-policy"
               className={linkStyle}
             >
+
               Website Usage Policy
+
             </Link>
 
           </div>
 
         </div>
 
-        {/* Bottom Bar */}
+        {/* BOTTOM BAR */}
         <div className="mt-6 border-t border-white/10 pt-6">
 
-          <p className="text-center text-sm text-gray-400">
+          <div className="flex flex-col gap-4 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
 
-            © {currentYear} Creek Real Estates.
-            All rights reserved.
+            <p className="text-xs text-gray-400 sm:text-sm">
 
-          </p>
+              © {currentYear} Creek Real Estates.
+              All rights reserved.
+
+            </p>
+
+            <p className="text-xs text-gray-500 sm:text-sm">
+
+              Designed for modern real estate experiences.
+
+            </p>
+
+          </div>
 
         </div>
 

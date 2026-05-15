@@ -179,7 +179,7 @@ aria-label="Next Image"
           {/* CONTENT */}
           <CardContent className="p-4 space-y-2">
 
-            <p className="text-2xl font-bold text-green-700">
+            <p className="text-lg sm:text-xl lg:text-2xl font-bold text-green-700">
               {formatPrice(property.price)}
             </p>
 

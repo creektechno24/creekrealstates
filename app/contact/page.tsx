@@ -9,7 +9,7 @@ import {
   Mail,
   MapPin,
   ChevronRight,
-    PhoneCall,
+  PhoneCall,
   MessageCircle,
 } from "lucide-react"
 
@@ -91,7 +91,7 @@ export default function ContactPage() {
 
         </div>
 
-        <div className="relative mx-auto grid max-w-7xl gap-16 px-4 py-20 lg:grid-cols-2 lg:items-center">
+        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:py-20 lg:grid-cols-2 lg:items-center lg:px-8">
 
           {/* LEFT */}
           <div>
@@ -103,19 +103,23 @@ export default function ContactPage() {
                 href="/"
                 className="transition hover:text-white"
               >
+
                 Home
+
               </Link>
 
               <ChevronRight className="h-4 w-4" />
 
               <span className="text-emerald-400">
+
                 Contact
+
               </span>
 
             </div>
 
             {/* TITLE */}
-            <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+            <h1 className="text-3xl font-bold leading-tight sm:text-4xl lg:text-6xl">
 
               Get In Touch
               <br />
@@ -123,7 +127,7 @@ export default function ContactPage() {
 
             </h1>
 
-            <p className="mt-8 max-w-xl text-lg leading-9 text-slate-300">
+            <p className="mt-8 max-w-xl text-base leading-8 text-slate-300 sm:text-lg sm:leading-9">
 
               Connect with Creek Real Estates
               for property inquiries,
@@ -132,34 +136,35 @@ export default function ContactPage() {
 
             </p>
 
-           {/* BUTTONS */}
-<div className="mt-10 flex flex-wrap gap-4">
+            {/* BUTTONS */}
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
 
-  <a
-    href="tel:+919322393157"
-    className="inline-flex items-center gap-3 rounded-2xl bg-emerald-500 px-7 py-4 text-lg font-semibold text-white transition hover:bg-emerald-600"
-  >
+              <a
+                href="tel:+919322393157"
+                className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white transition hover:bg-emerald-600 sm:w-auto"
+              >
 
-    <PhoneCall className="h-5 w-5" />
+                <PhoneCall className="h-5 w-5" />
 
-    Call Now
+                Call Now
 
-  </a>
+              </a>
 
-  <a
-    href="https://wa.me/919322393157"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-7 py-4 text-lg font-semibold text-white backdrop-blur-xl transition hover:bg-white/10"
-  >
+              <a
+                href="https://wa.me/919322393157"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-base font-semibold text-white backdrop-blur-xl transition hover:bg-white/10 sm:w-auto"
+              >
 
-    <MessageCircle className="h-5 w-5" />
+                <MessageCircle className="h-5 w-5" />
 
-    WhatsApp
+                WhatsApp
 
-  </a>
+              </a>
 
-</div>
+            </div>
+
           </div>
 
           {/* RIGHT */}
@@ -167,12 +172,12 @@ export default function ContactPage() {
 
             <div className="absolute inset-0 rounded-[40px] bg-gradient-to-br from-emerald-500/20 to-blue-500/20 blur-3xl" />
 
-            <div className="relative overflow-hidden rounded-[40px] border border-white/10 bg-white/5 p-4 backdrop-blur-xl shadow-[0_30px_120px_rgba(0,0,0,0.3)]">
+            <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-white/5 p-3 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.25)] sm:rounded-[40px] sm:p-4">
 
               <img
-              src="https://images.unsplash.com/photo-1552581234-26160f608093?q=80&w=1600&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1552581234-26160f608093?q=80&w=1600&auto=format&fit=crop"
                 alt="Contact Creek Real Estates"
-                className="h-[420px] w-full rounded-[32px] object-cover"
+                className="h-[260px] w-full rounded-[24px] object-cover sm:h-[420px] sm:rounded-[32px]"
               />
 
             </div>
@@ -184,20 +189,20 @@ export default function ContactPage() {
       </section>
 
       {/* CONTENT */}
-      <section className="mx-auto max-w-7xl px-4 py-20">
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 md:py-20 lg:px-8">
 
-        <div className="grid gap-10 lg:grid-cols-2">
+        <div className="grid gap-8 lg:grid-cols-2">
 
           {/* CONTACT FORM */}
-          <div className="rounded-[36px] border border-white/10 bg-white p-8 shadow-[0_20px_80px_rgba(0,0,0,0.08)] sm:p-10">
+          <div className="rounded-[32px] border border-white/10 bg-white p-6 shadow-[0_20px_80px_rgba(0,0,0,0.08)] sm:p-8 lg:p-10">
 
-            <h2 className="text-3xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
 
               Send a Message
 
             </h2>
 
-            <p className="mt-3 leading-8 text-gray-600">
+            <p className="mt-3 leading-7 text-gray-600 sm:leading-8">
 
               Fill out the form and
               our team will get back
@@ -207,7 +212,7 @@ export default function ContactPage() {
 
             <form
               onSubmit={handleSubmit}
-              className="mt-8 space-y-6"
+              className="mt-8 space-y-5 sm:space-y-6"
             >
 
               {/* NAME */}
@@ -216,7 +221,7 @@ export default function ContactPage() {
                 name="name"
                 placeholder="Full Name"
                 required
-                className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 outline-none transition focus:border-primary focus:bg-white"
+                className="h-12 w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 outline-none transition focus:border-primary focus:bg-white sm:h-14"
               />
 
               {/* EMAIL */}
@@ -225,7 +230,7 @@ export default function ContactPage() {
                 name="email"
                 placeholder="Email Address"
                 required
-                className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 outline-none transition focus:border-primary focus:bg-white"
+                className="h-12 w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 outline-none transition focus:border-primary focus:bg-white sm:h-14"
               />
 
               {/* PHONE */}
@@ -234,7 +239,7 @@ export default function ContactPage() {
                 name="phone"
                 placeholder="Phone Number"
                 required
-                className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 outline-none transition focus:border-primary focus:bg-white"
+                className="h-12 w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 outline-none transition focus:border-primary focus:bg-white sm:h-14"
               />
 
               {/* MESSAGE */}
@@ -250,7 +255,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-4 text-lg font-semibold text-white shadow-[0_10px_30px_rgba(16,185,129,0.25)] transition hover:scale-[1.01] hover:opacity-95 disabled:opacity-50"
+                className="w-full rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-4 text-base font-semibold text-white shadow-[0_10px_30px_rgba(16,185,129,0.25)] transition hover:scale-[1.01] hover:opacity-95 disabled:opacity-50 sm:text-lg"
               >
 
                 {loading && !success
@@ -279,24 +284,24 @@ export default function ContactPage() {
           </div>
 
           {/* CONTACT INFO */}
-          <div className="space-y-6">
+          <div className="space-y-5 sm:space-y-6">
 
             {/* PHONE */}
-            <div className="group rounded-[32px] border border-slate-200 bg-white p-8 shadow-[0_10px_40px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.10)]">
+            <div className="group rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_10px_40px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.10)] sm:rounded-[32px] sm:p-8">
 
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 sm:h-16 sm:w-16">
 
-                <Phone className="h-8 w-8 text-emerald-600" />
+                <Phone className="h-7 w-7 text-emerald-600 sm:h-8 sm:w-8" />
 
               </div>
 
-              <h2 className="mt-6 text-2xl font-bold text-slate-900">
+              <h2 className="mt-5 text-xl font-bold text-slate-900 sm:mt-6 sm:text-2xl">
 
                 Phone
 
               </h2>
 
-              <p className="mt-4 leading-8 text-gray-600">
+              <p className="mt-4 leading-7 text-gray-600 sm:leading-8">
 
                 +91 9322393157
                 <br />
@@ -307,21 +312,21 @@ export default function ContactPage() {
             </div>
 
             {/* EMAIL */}
-            <div className="group rounded-[32px] border border-slate-200 bg-white p-8 shadow-[0_10px_40px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.10)]">
+            <div className="group rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_10px_40px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.10)] sm:rounded-[32px] sm:p-8">
 
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-100">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 sm:h-16 sm:w-16">
 
-                <Mail className="h-8 w-8 text-blue-600" />
+                <Mail className="h-7 w-7 text-blue-600 sm:h-8 sm:w-8" />
 
               </div>
 
-              <h2 className="mt-6 text-2xl font-bold text-slate-900">
+              <h2 className="mt-5 text-xl font-bold text-slate-900 sm:mt-6 sm:text-2xl">
 
                 Email
 
               </h2>
 
-              <p className="mt-4 leading-8 text-gray-600">
+              <p className="mt-4 leading-7 text-gray-600 sm:leading-8">
 
                 info@creekrealestates.com
 
@@ -330,21 +335,21 @@ export default function ContactPage() {
             </div>
 
             {/* LOCATION */}
-            <div className="group rounded-[32px] border border-slate-200 bg-white p-8 shadow-[0_10px_40px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.10)]">
+            <div className="group rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_10px_40px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.10)] sm:rounded-[32px] sm:p-8">
 
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-100">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-100 sm:h-16 sm:w-16">
 
-                <MapPin className="h-8 w-8 text-orange-600" />
+                <MapPin className="h-7 w-7 text-orange-600 sm:h-8 sm:w-8" />
 
               </div>
 
-              <h2 className="mt-6 text-2xl font-bold text-slate-900">
+              <h2 className="mt-5 text-xl font-bold text-slate-900 sm:mt-6 sm:text-2xl">
 
                 Location
 
               </h2>
 
-              <p className="mt-4 leading-8 text-gray-600">
+              <p className="mt-4 leading-7 text-gray-600 sm:leading-8">
 
                 Hyderabad,
                 Telangana,
