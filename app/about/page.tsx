@@ -126,13 +126,12 @@ export default function AboutPage() {
 
               <div className="absolute inset-0 rounded-[40px] bg-gradient-to-br from-emerald-500/20 to-blue-500/20 blur-3xl" />
 
-              <div className="relative overflow-hidden rounded-[40px] border border-white/10 bg-white/5 p-4 backdrop-blur-xl shadow-[0_30px_120px_rgba(0,0,0,0.3)]">
-
-              <Image
+<div className="relative h-[260px] overflow-hidden rounded-[32px] border border-white/10 bg-white/5 p-3 backdrop-blur-xl shadow-[0_30px_120px_rgba(0,0,0,0.3)] sm:h-[360px] lg:h-[420px] sm:rounded-[40px] sm:p-4">
+    <Image
   src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1600&auto=format&fit=crop"
   alt="Luxury Real Estate"
   fill
-  className="object-cover"
+  className="rounded-[24px] object-cover sm:rounded-[32px]"
   sizes="(max-width:768px) 100vw, 50vw"
 />
 

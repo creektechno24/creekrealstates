@@ -173,12 +173,12 @@ export default function ContactPage() {
 
             <div className="absolute inset-0 rounded-[40px] bg-gradient-to-br from-emerald-500/20 to-blue-500/20 blur-3xl" />
 
-            <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-white/5 p-3 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.25)] sm:rounded-[40px] sm:p-4">
+<div className="relative h-[260px] overflow-hidden rounded-[32px] border border-white/10 bg-white/5 p-3 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.25)] sm:h-[420px] sm:rounded-[40px] sm:p-4">
 <Image
   src="https://images.unsplash.com/photo-1552581234-26160f608093?q=80&w=1600&auto=format&fit=crop"
   alt="Contact Creek Real Estates"
   fill
-  className="object-cover"
+  className="rounded-[24px] object-cover sm:rounded-[32px]"
   sizes="(max-width:768px) 100vw, 50vw"
 />
 
