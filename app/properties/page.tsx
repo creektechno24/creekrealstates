@@ -25,15 +25,31 @@ from "@/lib/types"
 interface SearchParams {
   search?: string
   type?: string
+  page?: string
 }
+
+const ITEMS_PER_PAGE = 9
 
 // 🔥 FETCH PROPERTIES
 async function getProperties(
   searchParams: SearchParams
-): Promise<Property[]> {
+): Promise<{
+  properties: Property[]
+  totalCount: number
+}> {
 
   const supabase =
     await createClient()
+
+  const currentPage =
+    Number(searchParams.page || "1")
+
+  const from =
+    (currentPage - 1) *
+    ITEMS_PER_PAGE
+
+  const to =
+    from + ITEMS_PER_PAGE - 1
 
   let query =
     supabase
@@ -91,16 +107,28 @@ async function getProperties(
 
   }
 
-  // 📅 ORDER
-  query = query.order(
-    "created_at",
-    { ascending: false }
-  )
+  // 📅 ORDER + PAGINATION
+  query = query
+    .order(
+      "created_at",
+      { ascending: false }
+    )
+    .range(from, to)
 
   const {
     data,
     error,
   } = await query
+
+  // 🔢 TOTAL COUNT
+  const {
+    count,
+  } = await supabase
+    .from("properties")
+    .select("*", {
+      count: "exact",
+      head: true,
+    })
 
   if (error) {
 
@@ -109,11 +137,19 @@ async function getProperties(
       error
     )
 
-    return []
+    return {
+      properties: [],
+      totalCount: 0,
+    }
 
   }
 
-  return data as Property[]
+  return {
+    properties:
+      data as Property[],
+    totalCount:
+      count || 0,
+  }
 
 }
 
@@ -126,8 +162,19 @@ async function PropertiesContent({
   isAdmin: boolean
 }) {
 
-  const properties =
+  const {
+    properties,
+    totalCount,
+  } =
     await getProperties(searchParams)
+
+  const currentPage =
+    Number(searchParams.page || "1")
+
+  const totalPages =
+    Math.ceil(
+      totalCount / ITEMS_PER_PAGE
+    )
 
   // ❌ EMPTY STATE
   if (properties.length === 0) {
@@ -162,19 +209,56 @@ async function PropertiesContent({
   // ✅ PROPERTIES GRID
   return (
 
-    <div className="grid gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
+    <>
 
-      {properties.map((property) => (
+      <div className="grid gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
 
-        <PropertyCard
-          key={property.id}
-          property={property}
-          isAdmin={isAdmin}
-        />
+        {properties.map((property) => (
 
-      ))}
+          <PropertyCard
+            key={property.id}
+            property={property}
+            isAdmin={isAdmin}
+          />
 
-    </div>
+        ))}
+
+      </div>
+
+      {/* PAGINATION */}
+      {totalPages > 1 && (
+
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
+
+          {Array.from(
+            {
+              length:
+                totalPages,
+            },
+            (_, i) => i + 1
+          ).map((page) => (
+
+            <Link
+              key={page}
+              href={`/properties?page=${page}`}
+              className={`flex h-11 w-11 items-center justify-center rounded-xl text-sm font-semibold transition ${
+                currentPage === page
+                  ? "bg-emerald-500 text-white"
+                  : "bg-white text-slate-700 hover:bg-slate-100"
+              }`}
+            >
+
+              {page}
+
+            </Link>
+
+          ))}
+
+        </div>
+
+      )}
+
+    </>
 
   )
 
@@ -218,8 +302,7 @@ export default async function PropertiesPage({
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage:
-                "url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1600&auto=format&fit=crop')",
-            }}
+"url('https://images.unsplash.com/photo-1460317442991-0ec209397118?q=80&w=1600&auto=format&fit=crop')"            }}
           />
 
           {/* DARK OVERLAY */}
