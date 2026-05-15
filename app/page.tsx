@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic"
+//export const dynamic = "force-dynamic"
 import Link from "next/link"
 import { ArrowRight, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -28,44 +28,86 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
-        />
-        <div className="absolute inset-0 bg-black/50" />
+     {/* HERO SECTION */}
+<section className="relative flex min-h-[78vh] w-full items-center justify-center overflow-hidden">
 
-        <div className="relative z-10 mx-auto max-w-7xl px-4 py-24 text-center text-white">
-          <h1 className="text-4xl font-bold sm:text-5xl lg:text-6xl">
-            Find Your Dream Property
-          </h1>
+  {/* BACKGROUND IMAGE */}
+  <div
+    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+    style={{
+      backgroundImage:
+        "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1600&auto=format&fit=crop')",
+    }}
+  />
 
-          <p className="mt-6 text-lg text-white/90 sm:text-xl">
-            Discover the perfect house, flat, or land for your needs.
-          </p>
+  {/* DARK OVERLAY */}
+  <div className="absolute inset-0 bg-black/60" />
 
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row justify-center">
-            <Link href="/properties">
-              <Button size="lg" className="gap-2 px-8 shadow-lg">
-                <Search className="h-5 w-5" />
-                Browse Properties
-              </Button>
-            </Link>
+  {/* CONTENT */}
+  <div className="relative z-10 flex w-full items-center justify-center px-4 py-24 text-center text-white">
 
-            <Link href="/post-property">
-              <Button
-                size="lg"
-                variant="outline"
-                className="gap-2 border-white bg-white/10 px-8 text-white backdrop-blur hover:bg-white hover:text-black"
-              >
-                Post Property
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+    <div>
+
+      <p className="text-sm font-semibold uppercase tracking-[0.35em] text-emerald-400">
+
+        Creek Real Estates
+
+      </p>
+
+      <h1 className="mt-6 text-4xl font-bold leading-tight sm:text-5xl lg:text-7xl">
+
+        Find Your Dream Property
+
+      </h1>
+
+      <p className="mx-auto mt-8 max-w-3xl text-lg leading-9 text-white/90 sm:text-xl">
+
+        Discover the perfect house,
+        flat, or land for your needs.
+
+      </p>
+
+      {/* BUTTONS */}
+      <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+
+        <Link href="/properties">
+
+          <Button
+            size="lg"
+            className="gap-2 px-8 shadow-xl"
+          >
+
+            <Search className="h-5 w-5" />
+
+            Browse Properties
+
+          </Button>
+
+        </Link>
+
+        <Link href="/post-property">
+
+          <Button
+            size="lg"
+            variant="outline"
+            className="gap-2 border-white bg-white/10 px-8 text-white backdrop-blur hover:bg-white hover:text-black"
+          >
+
+            Post Property
+
+            <ArrowRight className="h-5 w-5" />
+
+          </Button>
+
+        </Link>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
      {/* 🔥 UPDATED Latest Properties Section */}
 <section className="py-20 bg-gradient-to-b from-background to-muted/40">

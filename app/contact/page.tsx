@@ -9,6 +9,8 @@ import {
   Mail,
   MapPin,
   ChevronRight,
+    PhoneCall,
+  MessageCircle,
 } from "lucide-react"
 
 import { createClient }
@@ -78,50 +80,116 @@ export default function ContactPage() {
     <div className="min-h-screen bg-[#f8fafc]">
 
       {/* HERO */}
-      <section className="border-b bg-white">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white">
 
-        <div className="mx-auto max-w-7xl px-4 py-16">
+        {/* BACKGROUND GLOW */}
+        <div className="absolute inset-0 overflow-hidden">
 
-          {/* BREADCRUMB */}
-          <div className="mb-6 flex items-center gap-2 text-sm text-gray-500">
+          <div className="absolute -left-10 top-0 h-96 w-96 rounded-full bg-emerald-500/20 blur-3xl" />
 
-            <Link href="/">
-              Home
-            </Link>
+          <div className="absolute right-0 top-0 h-[420px] w-[420px] rounded-full bg-blue-500/10 blur-3xl" />
 
-            <ChevronRight className="h-4 w-4" />
+        </div>
 
-            <span>
-              Contact
-            </span>
+        <div className="relative mx-auto grid max-w-7xl gap-16 px-4 py-20 lg:grid-cols-2 lg:items-center">
 
+          {/* LEFT */}
+          <div>
+
+            {/* BREADCRUMB */}
+            <div className="mb-6 flex items-center gap-2 text-sm text-slate-400">
+
+              <Link
+                href="/"
+                className="transition hover:text-white"
+              >
+                Home
+              </Link>
+
+              <ChevronRight className="h-4 w-4" />
+
+              <span className="text-emerald-400">
+                Contact
+              </span>
+
+            </div>
+
+            {/* TITLE */}
+            <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+
+              Get In Touch
+              <br />
+              With Our Team
+
+            </h1>
+
+            <p className="mt-8 max-w-xl text-lg leading-9 text-slate-300">
+
+              Connect with Creek Real Estates
+              for property inquiries,
+              investment opportunities,
+              and expert real estate guidance.
+
+            </p>
+
+           {/* BUTTONS */}
+<div className="mt-10 flex flex-wrap gap-4">
+
+  <a
+    href="tel:+919322393157"
+    className="inline-flex items-center gap-3 rounded-2xl bg-emerald-500 px-7 py-4 text-lg font-semibold text-white transition hover:bg-emerald-600"
+  >
+
+    <PhoneCall className="h-5 w-5" />
+
+    Call Now
+
+  </a>
+
+  <a
+    href="https://wa.me/919322393157"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-7 py-4 text-lg font-semibold text-white backdrop-blur-xl transition hover:bg-white/10"
+  >
+
+    <MessageCircle className="h-5 w-5" />
+
+    WhatsApp
+
+  </a>
+
+</div>
           </div>
 
-          {/* TITLE */}
-          <h1 className="text-5xl font-bold text-slate-900">
+          {/* RIGHT */}
+          <div className="relative">
 
-            Contact Us
+            <div className="absolute inset-0 rounded-[40px] bg-gradient-to-br from-emerald-500/20 to-blue-500/20 blur-3xl" />
 
-          </h1>
+            <div className="relative overflow-hidden rounded-[40px] border border-white/10 bg-white/5 p-4 backdrop-blur-xl shadow-[0_30px_120px_rgba(0,0,0,0.3)]">
 
-          <p className="mt-6 max-w-2xl text-lg text-gray-600">
+              <img
+              src="https://images.unsplash.com/photo-1552581234-26160f608093?q=80&w=1600&auto=format&fit=crop"
+                alt="Contact Creek Real Estates"
+                className="h-[420px] w-full rounded-[32px] object-cover"
+              />
 
-            Reach out to Creek Real Estates
-            for property inquiries and support.
+            </div>
 
-          </p>
+          </div>
 
         </div>
 
       </section>
 
       {/* CONTENT */}
-      <section className="mx-auto max-w-7xl px-4 py-16">
+      <section className="mx-auto max-w-7xl px-4 py-20">
 
         <div className="grid gap-10 lg:grid-cols-2">
 
           {/* CONTACT FORM */}
-          <div className="rounded-3xl border bg-white p-8 shadow-sm">
+          <div className="rounded-[36px] border border-white/10 bg-white p-8 shadow-[0_20px_80px_rgba(0,0,0,0.08)] sm:p-10">
 
             <h2 className="text-3xl font-bold text-slate-900">
 
@@ -129,9 +197,11 @@ export default function ContactPage() {
 
             </h2>
 
-            <p className="mt-3 text-gray-600">
+            <p className="mt-3 leading-8 text-gray-600">
 
-              Fill out the form and our team will contact you shortly.
+              Fill out the form and
+              our team will get back
+              to you shortly.
 
             </p>
 
@@ -146,7 +216,7 @@ export default function ContactPage() {
                 name="name"
                 placeholder="Full Name"
                 required
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-primary"
+                className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 outline-none transition focus:border-primary focus:bg-white"
               />
 
               {/* EMAIL */}
@@ -155,7 +225,7 @@ export default function ContactPage() {
                 name="email"
                 placeholder="Email Address"
                 required
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-primary"
+                className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 outline-none transition focus:border-primary focus:bg-white"
               />
 
               {/* PHONE */}
@@ -164,23 +234,23 @@ export default function ContactPage() {
                 name="phone"
                 placeholder="Phone Number"
                 required
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-primary"
+                className="h-14 w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 outline-none transition focus:border-primary focus:bg-white"
               />
 
               {/* MESSAGE */}
               <textarea
-                rows={5}
+                rows={6}
                 name="message"
-                placeholder="Message"
+                placeholder="Write your message..."
                 required
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-primary"
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 outline-none transition focus:border-primary focus:bg-white"
               />
 
               {/* BUTTON */}
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-2xl bg-primary px-6 py-4 text-lg font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
+                className="w-full rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-4 text-lg font-semibold text-white shadow-[0_10px_30px_rgba(16,185,129,0.25)] transition hover:scale-[1.01] hover:opacity-95 disabled:opacity-50"
               >
 
                 {loading && !success
@@ -192,11 +262,15 @@ export default function ContactPage() {
               {/* SUCCESS */}
               {success && (
 
-                <p className="text-sm font-medium text-green-600">
+                <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3">
 
-                  Message sent successfully.
+                  <p className="text-sm font-medium text-emerald-700">
 
-                </p>
+                    Message sent successfully.
+
+                  </p>
+
+                </div>
 
               )}
 
@@ -208,9 +282,13 @@ export default function ContactPage() {
           <div className="space-y-6">
 
             {/* PHONE */}
-            <div className="rounded-3xl border bg-white p-8 shadow-sm">
+            <div className="group rounded-[32px] border border-slate-200 bg-white p-8 shadow-[0_10px_40px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.10)]">
 
-              <Phone className="h-8 w-8 text-primary" />
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100">
+
+                <Phone className="h-8 w-8 text-emerald-600" />
+
+              </div>
 
               <h2 className="mt-6 text-2xl font-bold text-slate-900">
 
@@ -229,9 +307,13 @@ export default function ContactPage() {
             </div>
 
             {/* EMAIL */}
-            <div className="rounded-3xl border bg-white p-8 shadow-sm">
+            <div className="group rounded-[32px] border border-slate-200 bg-white p-8 shadow-[0_10px_40px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.10)]">
 
-              <Mail className="h-8 w-8 text-primary" />
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-100">
+
+                <Mail className="h-8 w-8 text-blue-600" />
+
+              </div>
 
               <h2 className="mt-6 text-2xl font-bold text-slate-900">
 
@@ -248,9 +330,13 @@ export default function ContactPage() {
             </div>
 
             {/* LOCATION */}
-            <div className="rounded-3xl border bg-white p-8 shadow-sm">
+            <div className="group rounded-[32px] border border-slate-200 bg-white p-8 shadow-[0_10px_40px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.10)]">
 
-              <MapPin className="h-8 w-8 text-primary" />
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-100">
+
+                <MapPin className="h-8 w-8 text-orange-600" />
+
+              </div>
 
               <h2 className="mt-6 text-2xl font-bold text-slate-900">
 

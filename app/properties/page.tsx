@@ -5,8 +5,10 @@ import { PropertyFilters } from "@/components/property-filters"
 import { createClient } from "@/lib/supabase/server"
 import type { Property } from "@/lib/types"
 import { Spinner } from "@/components/ui/spinner"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
-export const dynamic = "force-dynamic"
+//export const dynamic = "force-dynamic"
 
 interface SearchParams {
   search?: string
@@ -23,26 +25,43 @@ async function getProperties(
   let query =
     supabase
       .from("properties")
-      .select("*")
+      .select(`
+        id,
+        title,
+        price,
+        location,
+        city,
+        area,
+        landmark,
+        description,
+        type,
+        amenities,
+        image_url,
+        images,
+        phone,
+        created_at
+      `)
 
   // 🔍 SEARCH
   if (searchParams.search) {
 
     const search =
-      searchParams.search.trim()
+      searchParams.search
+        .trim()
+        .replace(/,/g, "")
 
-    const filters = [
-      `title.ilike.%${search}%`,
-      `city.ilike.%${search}%`,
-      `area.ilike.%${search}%`,
-      `landmark.ilike.%${search}%`,
-      `description.ilike.%${search}%`,
-      `location.ilike.%${search}%`,
-      `type.ilike.%${search}%`,
-      `amenities.ilike.%${search}%`,
-    ].join(",")
-
-    query = query.or(filters)
+    query = query.or(
+      [
+        `title.ilike.%${search}%`,
+        `city.ilike.%${search}%`,
+        `area.ilike.%${search}%`,
+        `landmark.ilike.%${search}%`,
+        `description.ilike.%${search}%`,
+        `location.ilike.%${search}%`,
+        `type.ilike.%${search}%`,
+        `amenities.ilike.%${search}%`,
+      ].join(",")
+    )
 
   }
 
@@ -72,8 +91,8 @@ async function getProperties(
 
   if (error) {
 
-    console.error(
-      "Error fetching properties:",
+    console.log(
+      "SUPABASE ERROR =>",
       error
     )
 
@@ -129,7 +148,7 @@ async function PropertiesContent({
   // ✅ PROPERTIES GRID
   return (
 
-    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
 
       {properties.map((property) => (
 
@@ -173,31 +192,85 @@ export default async function PropertiesPage({
 
   return (
 
-    <div className="min-h-screen bg-gray-50">
+<div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100">
+    <div className="w-full">
+{/* HERO SECTION */}
+<section className="relative flex min-h-[72vh] w-full items-center justify-center overflow-hidden">
 
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+  {/* BACKGROUND IMAGE */}
+  <div
+    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+ style={{
+  backgroundImage:
+    "url('https://images.unsplash.com/photo-1460317442991-0ec209397118?q=80&w=1600&auto=format&fit=crop')",
+}}
+  />
 
-        {/* HEADING */}
-        <div className="mb-8">
+  {/* DARK OVERLAY */}
+  <div className="absolute inset-0 bg-black/55" />
 
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+  {/* CONTENT */}
+  <div className="relative z-10 mx-auto max-w-7xl px-4 py-24 text-center text-white">
 
-            All Properties
+    <p className="text-sm font-semibold uppercase tracking-[0.35em] text-emerald-400">
 
-          </h1>
+      Creek Real Estates
 
-          <p className="mt-2 max-w-xl text-gray-500">
+    </p>
 
-            Explore our curated collection
-            of houses, flats, and land
-            listings across prime locations.
+    <h5 className="mt-6 text-4xl font-bold leading-tight sm:text-5xl lg:text-7xl">
 
-          </p>
+      Discover Premium
+      
+      Properties
 
-        </div>
+    </h5>
 
+    <p className="mx-auto mt-8 max-w-3xl text-lg leading-9 text-white/90 sm:text-xl">
+
+      Explore our curated collection
+      of houses, flats, and land listings
+      across prime locations.
+
+    </p>
+
+    {/* BUTTONS */}
+    <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+
+      <Link href="/about">
+
+        <Button
+          size="lg"
+          className="gap-2 px-8 shadow-xl"
+        >
+
+          About Us
+
+        </Button>
+
+      </Link>
+
+      <Link href="/contact">
+
+        <Button
+          size="lg"
+          variant="outline"
+          className="gap-2 border-white bg-white/10 px-8 text-white backdrop-blur hover:bg-white hover:text-black"
+        >
+
+          Contact Us
+
+        </Button>
+
+      </Link>
+
+    </div>
+
+  </div>
+
+</section>
         {/* FILTERS */}
-        <div className="mb-10">
+        <div className="mb-10 rounded-[32px] border border-slate-200 bg-white/80 p-6 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
 
           <PropertyFilters />
 

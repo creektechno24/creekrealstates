@@ -712,7 +712,7 @@ video_url:
       </div>
 
       {/* HIDDEN INPUT */}
-     <input
+    <input
   type="file"
   accept="video/*"
   multiple

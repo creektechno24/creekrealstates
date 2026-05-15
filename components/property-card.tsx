@@ -115,6 +115,8 @@ export function PropertyCard({
         <div className="absolute right-3 top-3 z-20 flex gap-2">
 
           <button
+          title="Previous Image"
+aria-label="Previous Image"
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
@@ -126,6 +128,8 @@ export function PropertyCard({
           </button>
 
           <button
+          title="Next Image"
+aria-label="Next Image"
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
@@ -140,7 +144,7 @@ export function PropertyCard({
       )}
 
       <Link    href={`/properties/${property.id}`}>
-        <Card className="group h-full overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <Card className="group h-full overflow-hidden rounded-2xl border bg-white shadow-sm group transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_25px_80px_rgba(0,0,0,0.12)]">
 
           {/* IMAGE */}
           <div className="relative aspect-[4/3] overflow-hidden">
