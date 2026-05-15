@@ -150,12 +150,13 @@ aria-label="Next Image"
           <div className="relative aspect-[4/3] overflow-hidden">
 
             {imageSrc ? (
-              <Image
-                src={imageSrc}
-                alt={property.title}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
-              />
+             <Image
+  src={imageSrc}
+  alt={property.title}
+  fill
+  className="object-cover transition duration-700 group-hover:scale-105"
+  sizes="(max-width:768px) 100vw, 33vw"
+/>
             ) : (
               <div className="flex h-full items-center justify-center bg-gray-100">
                 <Building className="h-16 w-16 text-gray-400" />

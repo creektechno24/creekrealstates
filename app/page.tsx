@@ -1,6 +1,7 @@
 //export const dynamic = "force-dynamic"
 
 import Link from "next/link"
+import Image from "next/image"  
 
 import {
   ArrowRight,
@@ -76,13 +77,18 @@ export default async function HomePage() {
       <section className="relative flex min-h-[60vh] w-full items-center justify-center overflow-hidden md:min-h-[78vh]">
 
         {/* BACKGROUND IMAGE */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1800&auto=format&fit=crop')",
-          }}
-        />
+      <div className="absolute inset-0">
+
+  <Image
+    src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1800&auto=format&fit=crop"
+    alt="Luxury Property"
+    fill
+    priority
+    className="object-cover"
+    sizes="100vw"
+  />
+
+</div>
 
         {/* DARK OVERLAY */}
         <div className="absolute inset-0 bg-black/60" />

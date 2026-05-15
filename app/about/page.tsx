@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 
 import Link from "next/link"
 
@@ -127,11 +128,13 @@ export default function AboutPage() {
 
               <div className="relative overflow-hidden rounded-[40px] border border-white/10 bg-white/5 p-4 backdrop-blur-xl shadow-[0_30px_120px_rgba(0,0,0,0.3)]">
 
-                <img
-                  src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1600&auto=format&fit=crop"
-                  alt="Luxury Real Estate"
-                  className="h-[420px] w-full rounded-[32px] object-cover"
-                />
+              <Image
+  src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1600&auto=format&fit=crop"
+  alt="Luxury Real Estate"
+  fill
+  className="object-cover"
+  sizes="(max-width:768px) 100vw, 50vw"
+/>
 
               </div>
 
