@@ -80,7 +80,7 @@ export default async function HomePage() {
       <div className="absolute inset-0">
 
   <Image
-    src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1800&auto=format&fit=crop"
+   src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1600&auto=format&fit=crop"
     alt="Luxury Property"
     fill
     priority
