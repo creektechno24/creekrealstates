@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
 
 import { createClient }
-from "@/lib/supabase/server"
+from "@supabase/supabase-js"
 
 export default async function sitemap():
 Promise<MetadataRoute.Sitemap> {
@@ -9,8 +9,12 @@ Promise<MetadataRoute.Sitemap> {
   const baseUrl =
     "https://creekrealestates.com"
 
+  // DIRECT SUPABASE CLIENT
   const supabase =
-    await createClient()
+    createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
 
   const {
     data: properties,
@@ -21,7 +25,7 @@ Promise<MetadataRoute.Sitemap> {
 
   const propertyUrls =
     (properties || []).map(
-      (property) => ({
+      (property:any) => ({
 
         url:
           `${baseUrl}/properties/${property.id}`,
