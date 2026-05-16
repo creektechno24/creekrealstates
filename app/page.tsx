@@ -109,6 +109,7 @@ export default async function HomePage() {
               Find Your Dream Property
 
             </h1>
+            
 
             <p className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-white/90 sm:text-xl sm:leading-9">
 

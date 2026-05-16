@@ -137,11 +137,21 @@ export function Header() {
             className="rounded-full"
           />
 
-          <span className="text-lg font-bold text-slate-900 sm:text-2xl">
+         <div className="leading-tight">
 
-            Creek Real Estates
+  <span className="block text-lg font-bold text-slate-900 sm:text-2xl">
 
-          </span>
+    Creek Real Estates
+
+  </span>
+
+ <span className="hidden text-[11px] font-medium tracking-[0.08em] text-emerald-500/80 sm:block">  
+
+    Your Property Partner For Life
+
+  </span>
+
+</div>
 
         </Link>
 
