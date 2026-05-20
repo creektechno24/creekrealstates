@@ -329,10 +329,9 @@ export default async function PropertiesPage({
 
               <p className="mx-auto mt-8 max-w-3xl text-base leading-8 text-white/90 sm:text-xl sm:leading-9">
 
-                Explore our curated collection
-                of houses, flats, and land listings
-                across prime locations.
-
+              Explore our curated collection
+of houses, flats, land, and plots
+across prime locations.
               </p>
 
               {/* BUTTONS */}

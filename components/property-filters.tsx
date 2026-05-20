@@ -9,9 +9,14 @@ import { cn } from "@/lib/utils"
 
 const propertyTypes = [
   { value: "all", label: "All Types", icon: LayoutGrid },
+
   { value: "House", label: "House", icon: Home },
+
   { value: "Flat", label: "Flat", icon: Building },
+
   { value: "Land", label: "Land", icon: LandPlot },
+
+  { value: "Plots", label: "Plots", icon: LandPlot },
 ]
 
 export function PropertyFilters() {
