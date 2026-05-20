@@ -43,14 +43,15 @@ export interface Property {
 
 const typeIcons = {
   House: Home,
-  Land: LandPlot,
   Flat: Building,
+  Land: LandPlot,
+  Plots: LandPlot,
 }
-
 const typeColors = {
-  House: "bg-accent text-accent-foreground",
-  Land: "bg-primary/10 text-primary",
-  Flat: "bg-secondary text-secondary-foreground",
+  House: "bg-blue-100 text-blue-700",
+  Flat: "bg-green-100 text-green-700",
+  Land: "bg-yellow-100 text-yellow-700",
+  Plots: "bg-yellow-100 text-yellow-700",
 }
 
 function formatPrice(price: number): string {
