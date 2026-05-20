@@ -145,7 +145,7 @@ export function Header() {
 
   </span>
 
- <span className="hidden text-[11px] font-medium tracking-[0.08em] text-emerald-500/80 sm:block">  
+ <span className="block text-[10px] font-medium tracking-[0.06em] text-emerald-500/80 sm:text-[11px] sm:tracking-[0.08em]">
 
     Your Property Partner For Life
 
