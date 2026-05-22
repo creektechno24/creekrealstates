@@ -39,6 +39,8 @@ export interface Property {
   images?: string[] | null
   phone: string
   created_at: string
+  image_public_ids?: string[] | null
+video_public_ids?: string[] | null
 }
 
 const typeIcons = {
@@ -83,31 +85,72 @@ export function PropertyCard({
   const imageCount = property.images?.length || 0
 
   async function handleDelete(id: string) {
-    const ok = confirm("Delete this property?")
-    if (!ok) return
 
+  const ok = confirm("Delete this property?")
+  if (!ok) return
+
+  try {
+
+    // DELETE CLOUDINARY IMAGES
+    if (property.image_public_ids?.length) {
+
+      await fetch("/api/delete-media", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          publicIds: property.image_public_ids,
+          resourceType: "image",
+        }),
+      })
+
+    }
+
+    // DELETE CLOUDINARY VIDEOS
+    if (property.video_public_ids?.length) {
+
+      await fetch("/api/delete-media", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          publicIds: property.video_public_ids,
+          resourceType: "video",
+        }),
+      })
+
+    }
+
+    // DELETE SUPABASE RECORD
     const { error } = await supabase
       .from("properties")
       .delete()
       .eq("id", id)
 
     if (error) {
-      toast({
-        title: "Error ❌",
-        description: "Failed to delete property",
-        variant: "destructive",
-      })
-      return
+      throw error
     }
 
     toast({
       title: "Deleted successfully ✅",
-      description: "Property removed",
+      description: "Property and media removed",
     })
 
     router.refresh()
+
+  } catch (error) {
+
+    toast({
+      title: "Error ❌",
+      description: "Failed to delete property",
+      variant: "destructive",
+    })
+
   }
 
+}
   return (
     <div className="relative">
 
