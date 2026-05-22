@@ -6,9 +6,14 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { uploadFile } from "../lib/storage/upload"
 
+interface UploadedImage {
+  url: string
+  publicId: string
+}
+
 interface MultiImageUploadProps {
-  values: string[]
-  onChange: (urls: string[]) => void
+  values: UploadedImage[]
+  onChange: (urls: UploadedImage[]) => void
 }
 
 export function ImageUpload({
@@ -53,7 +58,11 @@ export function ImageUpload({
 
         onChange([
           ...values,
-          uploadedFile.url,
+          {
+            url: uploadedFile.url,
+            publicId:
+              uploadedFile.publicId,
+          },
         ])
 
       } catch (error) {
@@ -154,7 +163,6 @@ export function ImageUpload({
 
   }, [])
 
-  // EMPTY STATE
   if (values.length === 0) {
 
     return (
@@ -230,7 +238,6 @@ export function ImageUpload({
 
   }
 
-  // IMAGE GRID
   return (
 
     <div className="space-y-3">
@@ -246,7 +253,7 @@ export function ImageUpload({
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
 
-        {values.map((url, index) => (
+        {values.map((image, index) => (
 
           <div
             key={index}
@@ -254,7 +261,7 @@ export function ImageUpload({
           >
 
             <Image
-              src={url}
+              src={image.url}
               alt={`Property image ${index + 1}`}
               fill
               className="object-cover"

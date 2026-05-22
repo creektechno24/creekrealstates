@@ -50,9 +50,9 @@ export function PropertyForm({
   property?.type || "Flat"
 )
 
-  const [imageUrls, setImageUrls] = useState<string[]>(
-    property?.images || []
-  )
+ const [imageUrls, setImageUrls] = useState<any[]>(
+  property?.images || []
+)
 
   // BASIC
   const [title, setTitle] = useState(property?.title || "")
@@ -148,6 +148,8 @@ const [videoFiles, setVideoFiles] =
     let uploadedVideoUrls: string[] =
   property?.video_urls || []
 
+  let uploadedVideoPublicIds: string[] = []
+
 if (videoFiles.length > 0) {
 
   uploadedVideoUrls = []
@@ -162,6 +164,9 @@ if (videoFiles.length > 0) {
       uploadedVideoUrls.push(
         uploadedFile.url
       )
+      uploadedVideoPublicIds.push(
+  uploadedFile.publicId
+)
 
     } catch (error) {
 
@@ -200,12 +205,15 @@ if (videoFiles.length > 0) {
   amenities: selectedAmenities.join(","),
 
   // IMAGES
-  image_url: imageUrls[0] || null,
+  image_url:
+  imageUrls[0]?.url || null,
 
-  images:
-    imageUrls.length > 0
-      ? imageUrls
-      : null,
+images:
+  imageUrls.length > 0
+    ? imageUrls.map(
+        (item) => item.url
+      )
+    : null,
 
   // CONTACT
   phone,
@@ -220,6 +228,15 @@ video_urls:
 // FIRST VIDEO FALLBACK
 video_url:
   uploadedVideoUrls[0] || null,
+
+
+  image_public_ids:
+  imageUrls.map(
+    (item) => item.publicId
+  ),
+
+video_public_ids:
+  uploadedVideoPublicIds,
 }
 
     try {
