@@ -18,6 +18,7 @@ import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { ImageUpload } from "@/components/image-upload"
 import { createClient } from "@/lib/supabase/client"
+import { uploadFile } from "../lib/storage/upload"
 
 const propertyTypes = [
   { value: "House", label: "House", icon: Home },
@@ -46,8 +47,8 @@ export function PropertyForm({
   const [error, setError] = useState<string | null>(null)
 
   const [selectedType, setSelectedType] = useState<PropertyType>(
-    property?.type || "Flat"
-  )
+  property?.type || "Flat"
+)
 
   const [imageUrls, setImageUrls] = useState<string[]>(
     property?.images || []
@@ -147,48 +148,35 @@ const [videoFiles, setVideoFiles] =
     let uploadedVideoUrls: string[] =
   property?.video_urls || []
 
-// VIDEO UPLOAD
 if (videoFiles.length > 0) {
 
   uploadedVideoUrls = []
 
   for (const file of videoFiles) {
 
-    const fileExt = file.name
-      .split(".")
-      .pop()
+    try {
 
-    const fileName =
-      `${Date.now()}-${Math.random()}.${fileExt}`
+      const uploadedFile =
+        await uploadFile(file)
 
-    const filePath =
-      `videos/${fileName}`
+      uploadedVideoUrls.push(
+        uploadedFile.url
+      )
 
-    const { error: uploadError } =
-      await supabase.storage
-        .from("property-videos")
-        .upload(filePath, file)
-
-    if (uploadError) {
+    } catch (error) {
 
       setError("Video upload failed")
 
       setIsSubmitting(false)
 
       return
+
     }
-
-    const {
-      data: { publicUrl },
-    } = supabase.storage
-      .from("property-videos")
-      .getPublicUrl(filePath)
-
-    uploadedVideoUrls.push(publicUrl)
 
   }
 
 }
+
 
    const propertyData = {
   title,
