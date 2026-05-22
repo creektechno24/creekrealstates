@@ -84,17 +84,27 @@ export function PropertyCard({
 
   const imageCount = property.images?.length || 0
 
-  async function handleDelete(id: string) {
+ async function handleDelete(id: string) {
 
   const ok = confirm("Delete this property?")
   if (!ok) return
 
   try {
 
-    // DELETE CLOUDINARY IMAGES
-    if (property.image_public_ids?.length) {
+    console.log("PROPERTY =>", property)
 
-      await fetch("/api/delete-media", {
+    // DELETE CLOUDINARY IMAGES
+    if (
+      property.image_public_ids &&
+      property.image_public_ids.length > 0
+    ) {
+
+      console.log(
+        "DELETING IMAGES =>",
+        property.image_public_ids
+      )
+
+      const imageRes = await fetch("/api/delete-media", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -105,12 +115,25 @@ export function PropertyCard({
         }),
       })
 
+      console.log(
+        "IMAGE DELETE RESPONSE =>",
+        await imageRes.json()
+      )
+
     }
 
     // DELETE CLOUDINARY VIDEOS
-    if (property.video_public_ids?.length) {
+    if (
+      property.video_public_ids &&
+      property.video_public_ids.length > 0
+    ) {
 
-      await fetch("/api/delete-media", {
+      console.log(
+        "DELETING VIDEOS =>",
+        property.video_public_ids
+      )
+
+      const videoRes = await fetch("/api/delete-media", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -120,6 +143,11 @@ export function PropertyCard({
           resourceType: "video",
         }),
       })
+
+      console.log(
+        "VIDEO DELETE RESPONSE =>",
+        await videoRes.json()
+      )
 
     }
 
@@ -141,6 +169,11 @@ export function PropertyCard({
     router.refresh()
 
   } catch (error) {
+
+    console.error(
+      "DELETE ERROR =>",
+      error
+    )
 
     toast({
       title: "Error ❌",

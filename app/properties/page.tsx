@@ -54,22 +54,24 @@ async function getProperties(
   let query =
     supabase
       .from("properties")
-      .select(`
-        id,
-        title,
-        price,
-        location,
-        city,
-        area,
-        landmark,
-        description,
-        type,
-        amenities,
-        image_url,
-        images,
-        phone,
-        created_at
-      `)
+     .select(`
+  id,
+  title,
+  price,
+  location,
+  city,
+  area,
+  landmark,
+  description,
+  type,
+  amenities,
+  image_url,
+  images,
+  phone,
+  created_at,
+  image_public_ids,
+  video_public_ids
+`)
 
   // 🔍 SEARCH
   if (searchParams.search) {

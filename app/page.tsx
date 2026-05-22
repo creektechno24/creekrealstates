@@ -32,17 +32,20 @@ Promise<Property[]> {
   } =
     await supabase
       .from("properties")
-      .select(`
-        id,
-        title,
-        price,
-        location,
-        type,
-        image_url,
-        images,
-        phone,
-        created_at
-      `)
+.select(`
+  id,
+  title,
+  price,
+  location,
+  type,
+  description,
+  image_url,
+  images,
+  phone,
+  created_at,
+  image_public_ids,
+  video_public_ids
+`)
       .order(
         "created_at",
         { ascending: false }
