@@ -208,20 +208,16 @@ if (videoFiles.length > 0) {
   amenities: selectedAmenities.join(","),
 
   // IMAGES
-  image_url:
-  imageUrls[0]?.url || null,
+  //image_url:
+  //imageUrls[0]?.url || null,
 
 
 
   // CONTACT
   phone,
 
-  images:
-  imageUrls.length > 0
-    ? imageUrls.map(
-        (item) => item.url
-      )
-    : property?.images || [],
+  
+  
 
 video_urls:
   uploadedVideoUrls.length > 0
@@ -233,18 +229,34 @@ video_url:
     ? uploadedVideoUrls[0]
     : property?.video_url || null,
 
-image_public_ids:
-  imageUrls.length > 0
-    ? imageUrls.map(
-        (item) => item.publicId
-      )
-    : property?.image_public_ids || [],
+
 
 video_public_ids:
   uploadedVideoPublicIds.length > 0
     ? uploadedVideoPublicIds
     : property?.video_public_ids || [],
 
+    // IMAGES
+image_url:
+  imageUrls[0]?.url || null,
+
+images:
+  imageUrls
+    .map((item) =>
+      typeof item === "string"
+        ? item
+        : item?.url
+    )
+    .filter(Boolean),
+
+image_public_ids:
+  imageUrls
+    .map((item) =>
+      typeof item === "string"
+        ? null
+        : item?.publicId
+    )
+    .filter(Boolean),
 
 
 
