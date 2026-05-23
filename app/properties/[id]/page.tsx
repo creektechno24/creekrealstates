@@ -224,13 +224,25 @@ const TypeIcon =
     property.type as keyof typeof typeIcons
   ] || Home
 
-  const images =
+ const images =
+  (
     property.images &&
     property.images.length > 0
       ? property.images
       : property.image_url
       ? [property.image_url]
       : []
+  )
+    .map((img: any) =>
+      typeof img === "string"
+        ? img
+        : img?.url
+    )
+    .filter(
+      (img: string) =>
+        img &&
+        img.trim() !== ""
+    )
 
   return (
 

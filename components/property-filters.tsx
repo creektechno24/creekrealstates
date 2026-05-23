@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useTransition } from "react"
-import { Search, Home, Building, LandPlot, LayoutGrid } from "lucide-react"
+import { Search, Home, Building, LandPlot, Trees, LayoutGrid } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -14,7 +14,7 @@ const propertyTypes = [
 
   { value: "Flat", label: "Flat", icon: Building },
 
-  { value: "Land", label: "Land", icon: LandPlot },
+  { value: "Land", label: "Land", icon: Trees },
 
   { value: "Plots", label: "Plots", icon: LandPlot },
 ]

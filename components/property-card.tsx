@@ -16,7 +16,7 @@ import {
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { createClient } from "@/lib/supabase/client"
+import { supabase } from "@/lib/supabase/client"
 import { useToast } from "@/hooks/use-toast"
 
 
@@ -71,7 +71,7 @@ export function PropertyCard({
 }) {
   const router = useRouter()
   const { toast } = useToast()
-  const supabase = createClient()
+  //const supabase = createClient()
 
   const [openEdit, setOpenEdit] = useState(false)
 

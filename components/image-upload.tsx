@@ -260,13 +260,18 @@ export function ImageUpload({
             className="group relative aspect-square overflow-hidden rounded-lg border border-border bg-muted"
           >
 
-            <Image
-              src={image.url}
-              alt={`Property image ${index + 1}`}
-              fill
-              className="object-cover"
-            />
-
+           {image?.url ? (
+  <Image
+    src={image.url}
+    alt={`Property image ${index + 1}`}
+    fill
+    className="object-cover"
+  />
+) : (
+  <div className="flex h-full items-center justify-center text-sm text-gray-500">
+    No image
+  </div>
+)}
             <Button
               type="button"
               variant="destructive"

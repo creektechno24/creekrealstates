@@ -14,12 +14,11 @@ import {
   MessageCircle,
 } from "lucide-react"
 
-import { createClient }
-from "@/lib/supabase/client"
+import { supabase } from "@/lib/supabase/client"
 
 export default function ContactPage() {
 
-  const supabase = createClient()
+  const client = supabase
 
   const [loading, setLoading] =
     useState(false)

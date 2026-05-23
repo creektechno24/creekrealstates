@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label"
 
 import { cn } from "@/lib/utils"
 import { ImageUpload } from "@/components/image-upload"
-import { createClient } from "@/lib/supabase/client"
+import { supabase } from "@/lib/supabase/client"
 import { uploadFile } from "../lib/storage/upload"
 
 const propertyTypes = [
@@ -143,7 +143,7 @@ const [videoFiles, setVideoFiles] =
       return
     }
 
-    const supabase = createClient()
+   // const supabase = createClient()
 
     let uploadedVideoUrls: string[] =
   property?.video_urls || []
@@ -199,7 +199,10 @@ if (videoFiles.length > 0) {
   type: selectedType,
 
   // DESCRIPTION
-  description,
+  description:
+  description.trim() !== ""
+    ? description
+    : property?.description || "",
 
   // AMENITIES
   amenities: selectedAmenities.join(","),
@@ -208,35 +211,44 @@ if (videoFiles.length > 0) {
   image_url:
   imageUrls[0]?.url || null,
 
-images:
-  imageUrls.length > 0
-    ? imageUrls.map(
-        (item) => item.url
-      )
-    : null,
+
 
   // CONTACT
   phone,
 
-  // VIDEO
- // VIDEOS
+  images:
+  imageUrls.length > 0
+    ? imageUrls.map(
+        (item) => item.url
+      )
+    : property?.images || [],
+
 video_urls:
   uploadedVideoUrls.length > 0
     ? uploadedVideoUrls
-    : null,
+    : property?.video_urls || [],
 
-// FIRST VIDEO FALLBACK
 video_url:
-  uploadedVideoUrls[0] || null,
+  uploadedVideoUrls.length > 0
+    ? uploadedVideoUrls[0]
+    : property?.video_url || null,
 
-
-  image_public_ids:
-  imageUrls.map(
-    (item) => item.publicId
-  ),
+image_public_ids:
+  imageUrls.length > 0
+    ? imageUrls.map(
+        (item) => item.publicId
+      )
+    : property?.image_public_ids || [],
 
 video_public_ids:
-  uploadedVideoPublicIds,
+  uploadedVideoPublicIds.length > 0
+    ? uploadedVideoPublicIds
+    : property?.video_public_ids || [],
+
+
+
+
+  
 }
 
     try {
