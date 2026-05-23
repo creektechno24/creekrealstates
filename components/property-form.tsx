@@ -50,9 +50,24 @@ export function PropertyForm({
   property?.type || "Flat"
 )
 
- const [imageUrls, setImageUrls] = useState<any[]>(
-  property?.images || []
+ const [imageUrls, setImageUrls] =
+useState<any[]>(
+
+(property?.images || []).map(
+(url:string,index:number)=>({
+
+url,
+
+publicId:
+property?.image_public_ids?.[index]
+|| null
+
+})
+
 )
+
+)
+
 
   // BASIC
   const [title, setTitle] = useState(property?.title || "")
@@ -182,8 +197,53 @@ if (videoFiles.length > 0) {
 
 }
 
+const currentPublicIds =
+imageUrls
+.map(
+(item:any)=>
+item?.publicId
+)
+.filter(Boolean)
+
+const removedPublicIds =
+(
+property?.image_public_ids || []
+)
+.filter(
+(id:string)=>
+
+!currentPublicIds.includes(id)
+)
+
+if (
+isEdit &&
+removedPublicIds.length > 0
+) {
+
+await fetch(
+"/api/delete-cloudinary",
+{
+method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:JSON.stringify({
+publicIds:
+removedPublicIds
+})
+
+}
+)
+
+}
+
 
    const propertyData = {
+
+    
   title,
   price: Number(price),
 
@@ -249,15 +309,20 @@ images:
     )
     .filter(Boolean),
 
-image_public_ids:
-  imageUrls
-    .map((item) =>
-      typeof item === "string"
-        ? null
-        : item?.publicId
-    )
-    .filter(Boolean),
+image_public_ids: [
 
+ ...(property?.image_public_ids || [])
+   .filter((id:string)=>
+      currentPublicIds.includes(id)
+   ),
+
+ ...currentPublicIds.filter(
+    (id:string)=>
+    !(property?.image_public_ids || [])
+    .includes(id)
+ )
+
+],
 
 
   
