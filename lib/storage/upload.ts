@@ -5,10 +5,10 @@ export async function uploadFile(file: File) {
 
   // FILE SIZE LIMITS
   const MAX_IMAGE_SIZE =
-    10 * 1024 * 1024 // 10MB
+    5 * 1024 * 1024 // 5MB
 
   const MAX_VIDEO_SIZE =
-    50 * 1024 * 1024 // 50MB
+    20 * 1024 * 1024 // 20MB
 
   if (
     !isVideo &&

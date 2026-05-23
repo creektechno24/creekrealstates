@@ -219,8 +219,10 @@ export default async function PropertyDetailsPage({
   if (!property)
     notFound()
 
-  const TypeIcon =
-    typeIcons[property.type]
+const TypeIcon =
+  typeIcons[
+    property.type as keyof typeof typeIcons
+  ] || Home
 
   const images =
     property.images &&
