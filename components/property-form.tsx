@@ -196,14 +196,17 @@ if (videoFiles.length > 0) {
   }
 
 }
-
 const currentPublicIds =
 imageUrls
+.filter(
+(item:any)=>
+item &&
+item.publicId
+)
 .map(
 (item:any)=>
-item?.publicId
+item.publicId
 )
-.filter(Boolean)
 
 const removedPublicIds =
 (
@@ -213,6 +216,16 @@ property?.image_public_ids || []
 (id:string)=>
 
 !currentPublicIds.includes(id)
+)
+
+console.log(
+"Current Images:",
+currentPublicIds
+)
+
+console.log(
+"Removed Images:",
+removedPublicIds
 )
 
 if (
