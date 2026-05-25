@@ -169,20 +169,34 @@ export async function generateMetadata({
 
     openGraph: {
 
-      title:
-        property.title,
+  title:
+    property.title,
 
-      description:
-        property.description ||
-        `${property.type} available in ${property.location}`,
+  description:
+    property.description ||
+    `${property.type} available in ${property.location}`,
 
-      images: [
-        {
-          url: image,
-        },
-      ],
+  url:
+    `https://creekrealestates.com/properties/${property.id}`,
 
-    },
+  siteName:
+    "Creek Real Estates",
+
+  type:
+    "website",
+
+  images: [
+
+      {
+        url: image,
+        width: 1200,
+        height: 630,
+        alt: property.title,
+      },
+
+  ],
+
+},
 
     twitter: {
 
@@ -233,6 +247,8 @@ const TypeIcon =
       ? [property.image_url]
       : []
   )
+
+  
     .map((img: any) =>
       typeof img === "string"
         ? img
@@ -244,7 +260,62 @@ const TypeIcon =
         img.trim() !== ""
     )
 
+    const structuredData = {
+
+  "@context": "https://schema.org",
+
+  "@type": "RealEstateListing",
+
+  name:
+    property.title,
+
+  description:
+    property.description,
+
+  image:
+    images,
+
+  offers: {
+
+    "@type": "Offer",
+
+    price:
+      property.price,
+
+    priceCurrency:
+      "INR",
+
+  },
+
+  address: {
+
+    "@type": "PostalAddress",
+
+    addressLocality:
+      property.city,
+
+    addressRegion:
+      property.area,
+
+  },
+
+}
+
   return (
+
+    <>
+
+<script
+type="application/ld+json"
+dangerouslySetInnerHTML={{
+__html: JSON.stringify(
+structuredData
+)
+}}
+/>
+
+
+    
 
     <div className="min-h-screen bg-gray-50">
 
@@ -602,6 +673,8 @@ const TypeIcon =
       </div>
 
     </div>
+
+    </>
 
   )
 

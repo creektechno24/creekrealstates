@@ -16,12 +16,27 @@ Promise<MetadataRoute.Sitemap> {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
 
-  const {
-    data: properties,
-  } =
-    await supabase
-      .from("properties")
-      .select("id, created_at")
+const {
+  data: properties,
+  error,
+} =
+await supabase
+.from("properties")
+.select("id, created_at")
+.order(
+  "created_at",
+  { ascending: false }
+)
+
+if (error) {
+  return [
+    {
+      url: baseUrl,
+      lastModified: new Date(),
+      priority: 1,
+    },
+  ]
+}
 
   const propertyUrls =
     (properties || []).map(

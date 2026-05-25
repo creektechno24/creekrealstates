@@ -37,6 +37,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
 
+  metadataBase: new URL(
+    "https://creekrealestates.com"
+  ),
+
   // GLOBAL SEO TITLE
   title: {
 
@@ -72,21 +76,58 @@ export const metadata: Metadata = {
   ],
 
   // OPEN GRAPH
-  openGraph: {
+ openGraph: {
 
-    title:
-      'Creek Real Estates',
+  title:
+    "Creek Real Estates",
 
-    description:
-      'Browse flats, apartments, villas, lands, and properties for sale.',
+  description:
+    "Browse flats, apartments, villas, lands, and properties for sale.",
 
-    type:
-      'website',
+  url:
+    "https://creekrealestates.com",
 
-    siteName:
-      'Creek Real Estates',
+  siteName:
+    "Creek Real Estates",
 
-  },
+  type:
+    "website",
+
+  images: [
+
+    {
+
+      url: "/logo.png",
+
+      width: 1200,
+
+      height: 630,
+
+      alt:
+        "Creek Real Estates",
+
+    }
+
+  ]
+
+},
+
+twitter: {
+
+  card:
+    "summary_large_image",
+
+  title:
+    "Creek Real Estates",
+
+  description:
+    "Browse flats, apartments, villas, lands, and properties for sale.",
+
+  images: [
+    "/logo.png"
+  ]
+
+},
 
   // EXISTING
   generator: 'v0.app',
@@ -126,10 +167,11 @@ export default function RootLayout({
   return (
 
     <html
-      lang="en"
-      suppressHydrationWarning
-      className="scroll-smooth"
-    >
+  lang="en"
+  suppressHydrationWarning
+  className="scroll-smooth"
+  data-scroll-behavior="smooth"
+>
 
       <body className="bg-background font-sans antialiased">
 
