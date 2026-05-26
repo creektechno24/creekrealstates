@@ -26,55 +26,70 @@ export default function ContactPage() {
   const [success, setSuccess] =
     useState(false)
 
-  async function handleSubmit(
-    e: React.FormEvent<HTMLFormElement>
-  ) {
+ async function handleSubmit(
+  e: React.FormEvent<HTMLFormElement>
+) {
 
-    e.preventDefault()
+  e.preventDefault()
 
-    const form =
-      e.currentTarget
+  const form =
+    e.currentTarget
 
-    setLoading(true)
+  setLoading(true)
 
-    setSuccess(false)
+  setSuccess(false)
 
-    const formData =
-      new FormData(form)
+  const formData =
+    new FormData(form)
 
-    const payload = {
+  const payload = {
 
-      name:
-        formData.get("name"),
+    name:
+      formData.get("name"),
 
-      email:
-        formData.get("email"),
+    email:
+      formData.get("email"),
 
-      phone:
-        formData.get("phone"),
+    phone:
+      formData.get("phone"),
 
-      message:
-        formData.get("message"),
-
-    }
-
-    const { error } =
-      await supabase
-        .from("contact_messages")
-        .insert([payload])
-
-    if (!error) {
-
-      form.reset()
-
-      setSuccess(true)
-
-    }
-
-    setLoading(false)
+    message:
+      formData.get("message"),
 
   }
 
+  // Save in Supabase
+  const { error } =
+    await supabase
+      .from("contact_messages")
+      .insert([payload])
+
+  if (!error) {
+
+    // Send Mail
+    await fetch(
+      "/api/send-contact-email",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: JSON.stringify(
+          payload
+        )
+      }
+    )
+
+    form.reset()
+
+    setSuccess(true)
+
+  }
+
+  setLoading(false)
+
+}
   return (
 
     <div className="min-h-screen bg-[#f8fafc]">
